@@ -1,0 +1,111 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KEYNOVA | Mechanical Keyboards</title>
+    <link rel="stylesheet" href="{% static 'products/style.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <a class="logo" href="/">KEYNOVA<span>.</span></a>
+        <nav>
+            <a href="/">Shop</a>
+            <a href="#products">Keyboards</a>
+            <a href="/admin/">Admin</a>
+        </nav>
+        <a class="cart-link" href="#products">EXPLORE ↗</a>
+    </header>
+
+    <main>
+        <section class="hero">
+            <p class="eyebrow">PRECISION MEETS PERSONALITY</p>
+            <h1>FIND YOUR<br> <span>PERFECT KEY.</span></h1>
+            <p class="hero-text">
+                Discover mechanical keyboards designed for
+                gaming, creating, and everything in between.
+            </p>
+            <a class="primary-button" href="#products">
+                EXPLORE KEYBOARDS ↗
+            </a>
+            <div class="hero-note">BUILT FOR YOUR NEXT LEVEL.</div>
+        </section>
+
+        <section class="catalog" id="products">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">THE COLLECTION</p>
+                    <h2>Find your setup.</h2>
+                </div>
+                <span class="catalog-label">KEYNOVA / PRODUCTS</span>
+            </div>
+
+            <div class="product-grid">
+                    
+{% for product in products %}
+    <article class="product-card">
+        <a href="{% url 'product_detail' product.id %}"
+           class="product-card-link">
+            <div class="product-image">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}"
+                         alt="{{ product.name }}">
+                {% else %}
+                    <div class="image-placeholder">
+                        KEYNOVA
+                    </div>
+                {% endif %}
+
+                <span class="product-tag">
+                    {{ product.category.name }}
+                </span>
+            </div>
+
+            <div class="product-info">
+                <p class="brand-name">
+                    {{ product.brand.name }}
+                </p>
+
+                <h3>{{ product.name }}</h3>
+
+                <p class="specs">
+                    {{ product.layout|default:"Mechanical" }}
+                    ·
+                    {{ product.connection_type|default:"Premium build" }}
+                </p>
+
+                <div class="product-bottom">
+                    <span class="price">
+                        ${{ product.price|floatformat:2 }}
+                    </span>
+                    <span class="stock">
+                        IN STOCK
+                    </span>
+                </div>
+            </div>
+        </a>
+    </article>
+{% empty %}
+    <div class="empty-state">
+        <h3>The collection is loading.</h3>
+        <p>
+            Our keyboards will appear here once you add
+            products through the admin dashboard.
+        </p>
+        <a href="/admin/">MANAGE PRODUCTS ↗</a>
+    </div>
+{% endfor %}
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <a class="logo" href="/">KEYNOVA<span>.</span></a>
+        <p>Engineered for every keystroke.</p>
+        <p>© 2026 KEYNOVA — Portfolio project.</p>
+    </footer>
+</body>
+</html>

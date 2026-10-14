@@ -1,0 +1,70 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} | KEYNOVA</title>
+    <link rel="stylesheet" href="{% static 'products/style.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <a class="logo" href="/">KEYNOVA<span>.</span></a>
+        <a href="/">← Back to shop</a>
+    </header>
+
+    <main class="detail-layout">
+        <section class="detail-image-panel">
+            {% if product.image %}
+                <img src="{{ product.image.url }}"
+                     alt="{{ product.name }}">
+            {% else %}
+                <div class="image-placeholder">KEYNOVA</div>
+            {% endif %}
+        </section>
+
+        <section class="detail-info-panel">
+            <p class="eyebrow">{{ product.brand.name }}</p>
+            <h1 class="product-title">{{ product.name }}</h1>
+
+            <p class="detail-price">
+                ${{ product.price|floatformat:2 }}
+            </p>
+
+            <p class="detail-description">
+                {{ product.description }}
+            </p>
+
+            <div class="specification-box">
+                <div class="spec-row">
+                    <span>Category</span>
+                    <strong>{{ product.category.name }}</strong>
+                </div>
+                <div class="spec-row">
+                    <span>Layout</span>
+                    <strong>{{ product.layout|default:"Not specified" }}</strong>
+                </div>
+                <div class="spec-row">
+                    <span>Connection</span>
+                    <strong>{{ product.connection_type|default:"Not specified" }}</strong>
+                </div>
+                <div class="spec-row">
+                    <span>Availability</span>
+                    <strong>
+                        {% if product.stock > 0 %}
+                            In stock ({{ product.stock }})
+                        {% else %}
+                            Out of stock
+                        {% endif %}
+                    </strong>
+                </div>
+            </div>
+
+            <button class="buy-button" disabled>
+                Shopping cart coming soon
+            </button>
+        </section>
+    </main>
+</body>
+</html>
