@@ -1,0 +1,94 @@
+
+                {% for product in products %}
+                    {% with variant=product.variants.all|first %}
+                    <article class="product-card">
+                        <a href="{% url 'product_detail' product.id %}"
+                           class="product-card-link">
+
+                            <div class="product-image">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}"
+                                         alt="{{ product.name }}">
+                                {% else %}
+                                    <div class="image-placeholder">
+                                        KEYNOVA
+                                    </div>
+                                {% endif %}
+
+                                <span class="product-tag">
+                                    {{ product.category.name }}
+                                </span>
+
+                                {% if variant.is_on_sale %}
+                                <span class="sale-badge homepage-sale-badge">
+                                        {{ variant.discount_percentage }}% OFF
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            <div class="product-info">
+                                <p class="brand-name">
+                                    {{ product.brand.name }}
+                                </p>
+
+                                <h3>{{ product.name }}</h3>
+
+                                <p class="specs">
+                                    {{ product.layout|default:"Mechanical" }}
+                                    ·
+                                    {{ product.connection_type|default:"Premium build" }}
+                                </p>
+
+                                <div class="product-bottom">
+                                    <div class="homepage-price">
+                                        {% if variant %}
+                                            {% if variant.is_on_sale %}
+                                                <del class="original-price">
+                                                    {{ variant.compare_at_price|floatformat:"0g" }} Ks
+                                                </del>
+                                                <span class="price sale-current-price">
+                                                    {{ variant.effective_price|floatformat:"0g" }} Ks
+                                                </span>
+                                            {% else %}
+                                                <span class="price">
+                                                    {{ variant.effective_price|floatformat:"0g" }} Ks
+                                                </span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="price">
+                                                {{ product.price|floatformat:"0g" }} Ks
+                                            </span>
+                                        {% endif %}
+                                    </div>
+
+                                    <span class="stock">
+                                        {% if variant %}
+                                            IN STOCK
+                                        {% else %}
+                                            VIEW OPTIONS
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                    {% endwith %}
+                    {% empty %}
+    <div class="empty-state">
+        {% if active_brand %}
+            <h3>No {{ active_brand.name }} keyboards yet.</h3>
+            <p>New arrivals are on the way. Check back soon.</p>
+        {% else %}
+            <h3>The collection is loading.</h3>
+            <p>
+                Our keyboards will appear here once you add
+                products through the admin dashboard.
+            </p>
+            <a href="/admin/">MANAGE PRODUCTS ↗</a>
+        {% endif %}
+    </div>
+{% endfor %}
+
+    </div>
+  </section>
+</main>
