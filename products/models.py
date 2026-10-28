@@ -1,13 +1,29 @@
 from django.db import models
+from django.utils.text import slugify 
 
 class Brand(models.Model):
-    name= models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     website = models.URLField(blank=True)
+    is_featured = models.BooleanField(
+        default=False,
+        help_text="Show this brand as a quick chip on the home page.",
+    )
+    featured_order = models.PositiveSmallIntegerField(
+        default=0,
+        help_text="Chip order on the home page. 1 appears first.",
+    )
+
+    class Meta:
+        ordering = ["featured_order", "name"]
 
     def __str__(self):
         return self.name
 
+    @property
+    def slug(self):
+        return slugify(self.name)
+    
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)

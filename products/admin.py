@@ -2,10 +2,10 @@
 from django.contrib import admin
 from .models import Brand, Category, Product, ProductVariant, VariantOption
 
-
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
-    list_display = ("name", "website")
+    list_display = ("name", "is_featured", "featured_order")
+    list_editable = ("is_featured", "featured_order")
     search_fields = ("name",)
 
 
