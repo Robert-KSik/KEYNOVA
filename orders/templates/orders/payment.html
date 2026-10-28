@@ -1,0 +1,839 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Payment | KEYNOVA</title>
+    <link rel="stylesheet" href="{% static 'products/style.css' %}">
+
+    <style>
+        :root {
+            --bg: #100c18;
+            --surface: #191321;
+            --border: #382846;
+            --purple: #cba6f7;
+            --purple-bright: #e0c7ff;
+            --text: #f6f0fc;
+            --muted: #a99bb7;
+            --silver: #d5cedd;
+            --error: #ff9999;
+        }
+
+        body {
+            background:
+                radial-gradient(ellipse at 75% 0%, #352044 0%, transparent 42%),
+                var(--bg);
+            color: var(--text);
+        }
+
+        .pay-page {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 46px 24px 80px;
+        }
+
+        .eyebrow-label {
+            color: var(--purple);
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .pay-heading h1 {
+            font-size: clamp(30px, 5vw, 44px);
+            letter-spacing: -1.5px;
+            font-weight: 600;
+            margin: 12px 0 10px;
+        }
+
+        .pay-heading p {
+            color: var(--muted);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .order-chip {
+            display: inline-block;
+            margin-left: 6px;
+            padding: 3px 10px;
+            border: 1px solid #75558e;
+            border-radius: 20px;
+            color: var(--purple-bright);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Steps */
+        .steps {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 28px 0 30px;
+            font-size: 12px;
+            color: var(--muted);
+            flex-wrap: wrap;
+        }
+
+        .step { display: inline-flex; align-items: center; gap: 9px; }
+
+        .step-dot {
+            width: 24px;
+            height: 24px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .step.done { color: var(--silver); }
+
+        .step.done .step-dot {
+            background: rgba(203, 166, 247, 0.15);
+            border-color: rgba(203, 166, 247, 0.5);
+            color: var(--purple-bright);
+        }
+
+        .step.active { color: var(--purple-bright); }
+
+        .step.active .step-dot {
+            background: var(--purple);
+            border-color: var(--purple);
+            color: #160e20;
+            box-shadow: 0 0 16px rgba(203, 166, 247, 0.35);
+        }
+
+        .step-line { width: 34px; height: 1px; background: var(--border); }
+
+        /* Layout */
+        .pay-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #21182d, #17111f);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            animation: rise 0.45s ease both;
+        }
+
+        .card + .card { animation-delay: 0.08s; }
+
+        .card-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--purple);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .card-label .num {
+            width: 22px;
+            height: 22px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--purple);
+            color: #160e20;
+            font-size: 11px;
+            letter-spacing: 0;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 20px;
+        }
+
+        /* Amount */
+        .amount-box {
+            position: relative;
+            padding: 20px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(203, 166, 247, 0.4);
+            border-radius: 14px;
+            background:
+                radial-gradient(ellipse at top right, rgba(139, 92, 246, 0.2), transparent 65%),
+                #130f1b;
+            overflow: hidden;
+        }
+
+        .amount-box::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                110deg,
+                transparent 30%,
+                rgba(224, 199, 255, 0.07) 50%,
+                transparent 70%
+            );
+            transform: translateX(-100%);
+            animation: sheen 3.5s ease-in-out 0.6s infinite;
+            pointer-events: none;
+        }
+
+        .small-label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .amount-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .amount-value {
+            font-size: clamp(28px, 5vw, 36px);
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--purple-bright);
+        }
+
+        .amount-value small {
+            font-size: 0.5em;
+            font-weight: 600;
+            letter-spacing: 0;
+            margin-left: 4px;
+            color: var(--purple);
+        }
+
+        /* Account rows */
+        .info-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 15px 0;
+            border-bottom: 1px solid #ffffff0d;
+        }
+
+        .info-row:last-of-type { border-bottom: 0; }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .info-value.mono {
+            font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+            letter-spacing: 1px;
+        }
+
+        .copy-btn {
+            flex-shrink: 0;
+            padding: 8px 13px;
+            border: 1px solid rgba(203, 166, 247, 0.35);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--purple-bright);
+            font: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(203, 166, 247, 0.14);
+            border-color: var(--purple);
+        }
+
+        .copy-btn.copied {
+            background: var(--purple);
+            border-color: var(--purple);
+            color: #160e20;
+        }
+
+        .extra-line {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .how-to {
+            margin: 20px 0 0;
+            padding: 16px 18px 16px 36px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: rgba(16, 12, 24, 0.5);
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .how-to li::marker { color: var(--purple); font-weight: 700; }
+        .how-to strong { color: var(--silver); }
+
+        /* Form */
+        .notice {
+            padding: 13px 16px;
+            margin-bottom: 20px;
+            border: 1px solid #75558e;
+            border-radius: 10px;
+            background: rgba(203, 166, 247, 0.1);
+            color: var(--purple-bright);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .notice.error {
+            border-color: #b85c5c;
+            background: rgba(255, 153, 153, 0.08);
+            color: var(--error);
+        }
+
+        .form-field { margin-bottom: 22px; }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--silver);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .form-field input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #100c18;
+            color: var(--text);
+            font: inherit;
+            font-size: 15px;
+            font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+            letter-spacing: 0.5px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-field input[type="text"]::placeholder {
+            color: #6f6180;
+            font-family: inherit;
+            font-size: 13px;
+            letter-spacing: 0;
+        }
+
+        .form-field input[type="text"]:focus {
+            outline: none;
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(203, 166, 247, 0.15);
+        }
+
+        .hint {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .field-error {
+            margin: 8px 0 0;
+            color: var(--error);
+            font-size: 12px;
+        }
+
+        /* Screenshot dropzone */
+        .dropzone {
+            position: relative;
+            display: block;
+            padding: 22px 16px;
+            border: 1.5px dashed #5a416f;
+            border-radius: 12px;
+            background: #130f1b;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .dropzone:hover,
+        .dropzone.drag,
+        .dropzone:focus-within {
+            border-color: var(--purple);
+            background: #1a1225;
+        }
+
+        .dropzone input {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .drop-title {
+            display: block;
+            color: var(--silver);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .drop-sub {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .preview {
+            display: none;
+            align-items: center;
+            gap: 14px;
+            margin-top: 12px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #130f1b;
+        }
+
+        .preview.show { display: flex; animation: rise 0.3s ease both; }
+
+        .preview img {
+            width: 56px;
+            height: 56px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+
+        .preview-info { flex: 1; min-width: 0; }
+
+        .preview-name {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .preview-size { color: var(--muted); font-size: 12px; }
+
+        .remove-btn {
+            padding: 7px 11px;
+            border: 1px solid #5a416f;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--muted);
+            font: inherit;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover { color: var(--error); border-color: var(--error); }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 6px;
+            padding: 15px 22px;
+            border: 0;
+            border-radius: 10px;
+            background: var(--purple);
+            color: #160e20;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--purple-bright);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(203, 166, 247, 0.2);
+        }
+
+        .submit-btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
+
+        .fine-print {
+            margin: 16px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        .fine-print a { color: var(--purple); text-decoration: none; }
+        .fine-print a:hover { color: var(--purple-bright); }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        @keyframes sheen {
+            0%, 55% { transform: translateX(-100%); }
+            100%    { transform: translateX(100%); }
+        }
+
+        @media (max-width: 860px) {
+            .pay-layout { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 560px) {
+            .pay-page { padding: 32px 16px 56px; }
+            .card { padding: 20px; }
+            .step-line { width: 18px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <a class="logo" href="/">KEYNOVA<span>.</span></a>
+        <a class="cart-back-link" href="/">Continue shopping</a>
+    </header>
+
+    <main class="pay-page">
+        <div class="pay-heading">
+            <div class="eyebrow-label">Checkout / 002</div>
+            <h1>
+                Complete your payment.
+            </h1>
+            <p>
+                Your order is saved
+                <span class="order-chip">Order #{{ order.pk }}</span>
+                &mdash; pay with {{ account.label }}, then confirm below.
+            </p>
+        </div>
+
+        <div class="steps" aria-label="Checkout progress">
+            <span class="step done">
+                <span class="step-dot">&#10003;</span> Your details
+            </span>
+            <span class="step-line"></span>
+            <span class="step active">
+                <span class="step-dot">2</span> Payment
+            </span>
+            <span class="step-line"></span>
+            <span class="step">
+                <span class="step-dot">3</span> Confirmed
+            </span>
+        </div>
+
+        <div class="pay-layout">
+
+            <!-- Step A: where to send the money -->
+            <section class="card">
+                <div class="card-label">
+                    <span class="num">1</span> Send payment
+                </div>
+
+                <h2>Pay with {{ account.label }}</h2>
+
+                <div class="amount-box">
+                    <span class="small-label">Amount to pay</span>
+
+                    <div class="amount-row">
+                        <div class="amount-value">
+                            {{ order.total|floatformat:"0g" }}<small>{{ order.currency_label }}</small>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="copy-btn"
+                            data-copy="{{ order.total|floatformat:'0u' }}"
+                        >
+                            Copy amount
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div>
+                        <span class="small-label">Account name</span>
+                        <div class="info-value">{{ account.account_name }}</div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="copy-btn"
+                        data-copy="{{ account.account_name }}"
+                    >
+                        Copy
+                    </button>
+                </div>
+
+                <div class="info-row">
+                    <div>
+                        <span class="small-label">
+                            {% if order.payment_method == "bank" %}
+                                Account number
+                            {% else %}
+                                Phone / account number
+                            {% endif %}
+                        </span>
+                        <div class="info-value mono">{{ account.account_number }}</div>
+                        {% if account.extra %}
+                            <p class="extra-line">{{ account.extra }}</p>
+                        {% endif %}
+                    </div>
+
+                    <button
+                        type="button"
+                        class="copy-btn"
+                        data-copy="{{ account.account_number }}"
+                    >
+                        Copy
+                    </button>
+                </div>
+
+                <ol class="how-to">
+                    <li>
+                        Open your <strong>{{ account.label }}</strong> app and
+                        send <strong>exactly {{ order.total|floatformat:"0g" }}
+                        {{ order.currency_label }}</strong> to the account above.
+                    </li>
+                    <li>
+                        Copy the <strong>{{ account.id_label }}</strong> from
+                        your payment receipt.
+                    </li>
+                    <li>
+                        Paste it in the box on this page and submit.
+                    </li>
+                </ol>
+            </section>
+
+            <!-- Step B: prove it -->
+            <section class="card">
+                <div class="card-label">
+                    <span class="num">2</span> Confirm payment
+                </div>
+
+                <h2>Enter your payment details</h2>
+
+                {% if order.payment_status == "rejected" %}
+                    <div class="notice error">
+                        We couldn't verify your last submission. Please check
+                        the details and submit again.
+                    </div>
+                {% endif %}
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="notice{% if message.tags == 'error' %} error{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if form.non_field_errors %}
+                    <div class="notice error">
+                        {% for error in form.non_field_errors %}{{ error }} {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form
+                    method="post"
+                    enctype="multipart/form-data"
+                    id="proof-form"
+                    novalidate
+                >
+                    {% csrf_token %}
+
+                    <div class="form-field">
+                        <label for="{{ form.transaction_id.id_for_label }}">
+                            {{ account.id_label }}
+                        </label>
+
+                        {{ form.transaction_id }}
+
+                        <p class="hint">{{ account.tip }}</p>
+
+                        {% for error in form.transaction_id.errors %}
+                            <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-field">
+                        <label for="{{ form.payment_screenshot.id_for_label }}">
+                            {{ form.payment_screenshot.label }}
+                        </label>
+
+                        <label class="dropzone" id="dropzone">
+                            {{ form.payment_screenshot }}
+                            <span class="drop-title">Tap to upload or drop an image</span>
+                            <span class="drop-sub">PNG or JPG &middot; up to 5 MB &middot; helps us confirm faster</span>
+                        </label>
+
+                        <div class="preview" id="preview">
+                            <img id="preview-img" alt="Screenshot preview">
+                            <div class="preview-info">
+                                <span class="preview-name" id="preview-name"></span>
+                                <span class="preview-size" id="preview-size"></span>
+                            </div>
+                            <button type="button" class="remove-btn" id="remove-file">
+                                Remove
+                            </button>
+                        </div>
+
+                        <p class="field-error" id="file-error" hidden></p>
+
+                        {% for error in form.payment_screenshot.errors %}
+                            <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submit-btn">
+                        Submit payment details
+                    </button>
+                </form>
+
+                <p class="fine-print">
+                    Our team checks every payment before confirming.
+                    You can follow your order any time in
+                    <a href="{% url 'orders:order_history' %}">My Orders</a>.
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        (function () {
+            const MAX_MB = 5;
+
+            /* ---------- Copy buttons ---------- */
+            function fallbackCopy(text) {
+                const area = document.createElement("textarea");
+                area.value = text;
+                area.setAttribute("readonly", "");
+                area.style.position = "fixed";
+                area.style.opacity = "0";
+                document.body.appendChild(area);
+                area.select();
+                try { document.execCommand("copy"); } catch (e) {}
+                document.body.removeChild(area);
+            }
+
+            document.querySelectorAll(".copy-btn").forEach(btn => {
+                const original = btn.textContent;
+
+                btn.addEventListener("click", async () => {
+                    const text = btn.dataset.copy || "";
+
+                    try {
+                        await navigator.clipboard.writeText(text);
+                    } catch (e) {
+                        fallbackCopy(text);
+                    }
+
+                    btn.textContent = "Copied ✓";
+                    btn.classList.add("copied");
+
+                    setTimeout(() => {
+                        btn.textContent = original;
+                        btn.classList.remove("copied");
+                    }, 1600);
+                });
+            });
+
+            /* ---------- Screenshot preview ---------- */
+            const input = document.getElementById("{{ form.payment_screenshot.id_for_label }}");
+            const dropzone = document.getElementById("dropzone");
+            const preview = document.getElementById("preview");
+            const previewImg = document.getElementById("preview-img");
+            const previewName = document.getElementById("preview-name");
+            const previewSize = document.getElementById("preview-size");
+            const removeBtn = document.getElementById("remove-file");
+            const fileError = document.getElementById("file-error");
+
+            let objectUrl = null;
+
+            function clearPreview() {
+                input.value = "";
+                preview.classList.remove("show");
+                previewImg.removeAttribute("src");
+
+                if (objectUrl) {
+                    URL.revokeObjectURL(objectUrl);
+                    objectUrl = null;
+                }
+            }
+
+            function showError(message) {
+                fileError.textContent = message;
+                fileError.hidden = !message;
+            }
+
+            input.addEventListener("change", () => {
+                showError("");
+                const file = input.files && input.files[0];
+
+                if (!file) { clearPreview(); return; }
+
+                if (!file.type.startsWith("image/")) {
+                    clearPreview();
+                    showError("Please choose an image file.");
+                    return;
+                }
+
+                if (file.size > MAX_MB * 1024 * 1024) {
+                    clearPreview();
+                    showError("That image is too large. Maximum size is " + MAX_MB + " MB.");
+                    return;
+                }
+
+                if (objectUrl) URL.revokeObjectURL(objectUrl);
+                objectUrl = URL.createObjectURL(file);
+
+                previewImg.src = objectUrl;
+                previewName.textContent = file.name;
+                previewSize.textContent = (file.size / 1024 / 1024).toFixed(2) + " MB";
+                preview.classList.add("show");
+            });
+
+            removeBtn.addEventListener("click", () => {
+                clearPreview();
+                showError("");
+            });
+
+            ["dragenter", "dragover"].forEach(evt =>
+                dropzone.addEventListener(evt, () => dropzone.classList.add("drag"))
+            );
+            ["dragleave", "drop"].forEach(evt =>
+                dropzone.addEventListener(evt, () => dropzone.classList.remove("drag"))
+            );
+
+            /* ---------- Submit ---------- */
+            const form = document.getElementById("proof-form");
+            const submitBtn = document.getElementById("submit-btn");
+
+            form.addEventListener("submit", () => {
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Submitting…";
+            });
+
+            // Re-enable if the user comes back with the browser's back button.
+            window.addEventListener("pageshow", () => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit payment details";
+            });
+        })();
+    </script>
+</body>
+</html>

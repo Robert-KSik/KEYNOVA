@@ -1,0 +1,158 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Your Cart | KEYNOVA</title>
+    <link rel="stylesheet" href="{% static 'products/style.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <a class="logo" href="/">KEYNOVA<span>.</span></a>
+        <a class="cart-back-link" href="/">
+            <span aria-hidden="true">&larr;</span> Back to keyboards
+        </a>
+    </header>
+
+    <main class="cart-page">
+        <h1>Your Shopping Cart</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="cart-message">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        {% if items %}
+            <div class="cart-list">
+                {% for item in items %}
+                    <article class="cart-item">
+                        
+            <div class="cart-item-image">
+    {% if item.product.image %}
+    <img src="{{ item.product.image.url }}"
+         alt="{{ item.product.name }}">
+    {% else %}
+        <div class="image-placeholder">KEYNOVA</div>
+    {% endif %}
+            </div>
+
+                        <div class="cart-item-info">
+                            <h2>{{ item.product.name }}</h2>
+
+                            <p class="variant-name">
+                                Configuration: {{ item.variant.variant_name }}
+                            </p>
+
+                            <p>
+                                Layout: {{ item.variant.layout }}
+                                · Switch: {{ item.variant.get_switch_type_display }}
+                            </p>
+
+                            <p>
+                                Price per keyboard:
+                                ${{ item.unit_price|floatformat:2 }}
+                            </p>
+
+                            {% if item.options %}
+                                <div class="cart-selected-options">
+                                    <strong>Selected options:</strong>
+
+                                    <ul>
+                                        {% for option in item.options %}
+                                            <li>
+                                                {{ option.get_option_type_display }}:
+                                                {{ option.choice_name }}
+
+                                                {% if option.extra_price > 0 %}
+                                                    (+${{ option.extra_price|floatformat:2 }})
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% else %}
+                                <p>Standard configuration</p>
+                            {% endif %}
+
+                            <p>
+                                Available stock: {{ item.available_stock }}
+                            </p>
+
+                            <p class="cart-subtotal">
+                                Subtotal: ${{ item.subtotal|floatformat:2 }}
+                            </p>
+                        </div>
+
+                        <div class="cart-actions">
+                            <form
+                                method="post"
+                                action="{% url 'cart:update_cart' item.cart_key %}"
+                            >
+                                {% csrf_token %}
+
+                                <label for="quantity-{{ forloop.counter }}">
+                                    Quantity
+                                </label>
+
+                                <input
+                                    id="quantity-{{ forloop.counter }}"
+                                    type="number"
+                                    name="quantity"
+                                    min="1"
+                                    max="{{ item.available_stock }}"
+                                    value="{{ item.quantity }}"
+                                    required
+                                >
+
+                                <button type="submit">Update</button>
+                            </form>
+
+                            <form
+                                method="post"
+                                action="{% url 'cart:remove_from_cart' item.cart_key %}"
+                            >
+                                {% csrf_token %}
+
+                                <button type="submit" class="cart-remove">
+                                    Remove
+                                </button>
+                            </form>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+
+            <section class="cart-summary">
+                <h2>Total: ${{ total|floatformat:2 }}</h2>
+
+                <p>
+                    Shipping and final charges will be calculated at checkout.
+                </p>
+
+                <a
+                    class="cart-shop-link"
+                    href="{% url 'orders:checkout' %}"
+                >
+                    Proceed to Checkout &rarr;
+                </a>
+            </section>
+        {% else %}
+            <section class="empty-cart">
+                <h2>Your cart is empty.</h2>
+
+                <p>
+                    Find your next favorite keyboard at KEYNOVA.
+                </p>
+
+                <a class="cart-shop-link" href="/">
+                    Explore keyboards
+                </a>
+            </section>
+        {% endif %}
+    </main>
+</body>
+</html>

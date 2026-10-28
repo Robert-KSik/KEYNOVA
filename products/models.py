@@ -44,3 +44,183 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.brand.name} {self.name}"
+
+
+class ProductVariant(models.Model):
+    SWITCH_TYPES = [
+        ("linear", "Linear"),
+        ("tactile", "Tactile"),
+        ("clicky", "Clicky"),
+        ("hall effect", "Hall Effect"),
+        ("tmr magnetic", "TMR Magnetic"),
+        ("optical", "Optical"),
+        
+       
+    ]
+
+    KEYCAP_MATERIALS = [
+        ("PBT", "PBT"),
+        ("ABS", "ABS"),
+        ("PC", "PC"),
+        ("POM", "POM"),
+        ("Ceramic", "Ceramic"),
+        ("Metal", "Metal"),
+        ("Exact material unconfirmed", "Exact material unconfirmed"),
+
+    ]
+
+    CONNECTION_TYPES = [
+        ("USB-C", "USB-C"),
+        ("Bluetooth", "Bluetooth"),
+        ("2.4GHz", "2.4 GHz Wireless"),
+        ("Tri-mode", "Tri-mode"),
+    ]
+
+    LAYOUT_CHOICES = [
+        ("60%", "60%"),
+        ("65%", "65%"),
+        ("75%", "75%"),
+        ("TKL", "Tenkeyless"),
+        ("Full-size", "Full-size"),
+    ]
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="variants",
+    )
+
+    variant_name = models.CharField(max_length=150)
+
+    image = models.ImageField(
+        upload_to="products/variants/",
+        blank=True,
+    )
+
+    case_color = models.CharField(max_length=50)
+    keycap_color = models.CharField(max_length=50)
+
+    keycap_material = models.CharField(
+        max_length=40,
+        choices=KEYCAP_MATERIALS,
+        default="PBT",
+    )
+
+    switch_type = models.CharField(
+        max_length=20,
+        choices=SWITCH_TYPES,
+    )
+    switch_model = models.CharField(max_length=100, blank=True)
+
+    connection_type = models.CharField(
+        max_length=20,
+        choices=CONNECTION_TYPES,
+    )
+
+    layout = models.CharField(
+        max_length=20,
+        choices=LAYOUT_CHOICES,
+    )
+
+    battery_capacity_mah = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text="Battery capacity in mAh; leave blank for wired models.",
+    )
+
+    price_adjustment = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        default=0,
+        help_text="Extra cost or discount relative to the base product price.",
+    )
+
+    compare_at_price = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Original variant price before discount. Leave blank when not on sale.",
+)
+
+    stock = models.PositiveIntegerField(default=0)
+    is_available = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["product", "variant_name"]
+
+    def __str__(self):
+        return f"{self.product.name} — {self.variant_name}"
+
+    @property
+    def effective_price(self):
+        return self.product.price + self.price_adjustment
+
+    
+    @property
+    def sale_price(self):
+        return self.effective_price
+
+    @property
+    def discount_amount(self):
+        if (
+            self.compare_at_price is not None
+            and self.compare_at_price > self.sale_price
+        ):
+            return self.compare_at_price - self.sale_price
+        return 0
+
+    @property
+    def discount_percentage(self):
+        if (
+            self.compare_at_price is not None
+            and self.compare_at_price > self.sale_price
+        ):
+            return round(
+                (self.discount_amount / self.compare_at_price) * 100
+            )
+        return 0
+
+    @property
+    def is_on_sale(self):
+        return self.discount_percentage > 0
+
+
+class VariantOption(models.Model):
+    OPTION_TYPES = [
+        ("switch", "Switch"),
+        ("case_color", "Case Color"),
+        ("keycap_color", "Keycap Color"),
+        ("keycap_material", "Keycap Material"),
+        ("connection", "Connection"),
+    ]
+
+    variant = models.ForeignKey(
+        ProductVariant,
+        on_delete=models.CASCADE,
+        related_name="options",
+    )
+    option_type = models.CharField(
+        max_length=30,
+        choices=OPTION_TYPES,
+    )
+    choice_name = models.CharField(max_length=100)
+    extra_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+    )
+    stock = models.PositiveIntegerField(default=0)
+    is_available = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["option_type", "choice_name"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["variant", "option_type", "choice_name"],
+                name="unique_variant_option_choice",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.variant} — {self.choice_name}"

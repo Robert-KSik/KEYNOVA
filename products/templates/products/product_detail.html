@@ -1,13 +1,87 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>{{ product.name }} | KEYNOVA</title>
+
     <link rel="stylesheet" href="{% static 'products/style.css' %}">
+
+    <style>
+        .customization-panel {
+            margin: 24px 0;
+            padding: 20px;
+            border: 1px solid #382846;
+            border-radius: 16px;
+            background: #191321;
+        }
+
+        .customization-panel h2 {
+            margin: 0 0 8px;
+            font-size: 1.15rem;
+        }
+
+        .customization-help,
+        .option-price,
+        .price-status {
+            color: #a99bb7;
+            font-size: 0.88rem;
+        }
+
+        .option-group {
+            margin-top: 18px;
+        }
+
+        .option-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .option-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #382846;
+            border-radius: 10px;
+            background: #100c18;
+            color: #f6f0fc;
+        }
+
+        .option-price {
+            margin-top: 6px;
+        }
+
+        .customization-total {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #382846;
+            font-weight: 700;
+        }
+
+        .price-status {
+            margin-top: 12px;
+        }
+
+        .price-status.error {
+            color: #ff9999;
+        }
+
+        .buy-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+    </style>
 </head>
+
 <body>
     <header class="navbar">
         <a class="logo" href="/">KEYNOVA<span>.</span></a>
@@ -17,8 +91,7 @@
     <main class="detail-layout">
         <section class="detail-image-panel">
             {% if product.image %}
-                <img src="{{ product.image.url }}"
-                     alt="{{ product.name }}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
             {% else %}
                 <div class="image-placeholder">KEYNOVA</div>
             {% endif %}
@@ -26,14 +99,183 @@
 
         <section class="detail-info-panel">
             <p class="eyebrow">{{ product.brand.name }}</p>
+
             <h1 class="product-title">{{ product.name }}</h1>
 
-            <p class="detail-price">
-                ${{ product.price|floatformat:2 }}
-            </p>
+            <p class="detail-description">{{ product.description }}</p>
 
-            <p class="detail-description">
-                {{ product.description }}
+            {% if variants %}
+                <form
+                    method="post"
+                    action="{% url 'cart:add_to_cart' variants.0.id %}"
+                    id="add-to-cart-form"
+                >
+                    {% csrf_token %}
+                    <div class="variant-photo-selector">
+    <p class="variant-photo-title">Choose your color</p>
+
+    <div class="variant-photo-list">
+        {% for variant in variants %}
+            {% if variant.image %}
+                <button
+                    type="button"
+                    class="variant-photo-button{% if forloop.first %} active{% endif %}"
+                    data-variant-id="{{ variant.id }}"
+                    aria-label="{{ variant.variant_name }}"
+                    title="{{ variant.variant_name }}"
+                >
+                    <img
+                        src="{{ variant.image.url }}"
+                        alt="{{ variant.variant_name }}"
+                    >
+                    <span>{{ variant.variant_name }}</span>
+                </button>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+                    <label for="variant-select">
+                        Choose your configuration
+                    </label>
+
+                    <select id="variant-select" name="variant_id" required>
+                        {% for variant in variants %}
+                            <option
+                                value="{{ variant.id }}"
+                                data-price="{{ variant.effective_price }}"
+                                data-compare-price="{{ variant.compare_at_price|default_if_none:'' }}"
+                                data-stock="{{ variant.stock }}"
+                                data-url="{% url 'cart:add_to_cart' variant.id %}"
+                                data-preview-url="/api/variants/{{ variant.id }}/price/"
+                                data-image-url="{% if variant.image %}{{ variant.image.url }}{% endif %}"
+                                {% if forloop.first %}selected{% endif %}
+                            >
+                                {{ variant.variant_name }} —
+                                {{ variant.layout }} —
+                                {{ variant.get_switch_type_display }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <div class="detail-price">
+                        <del id="original-price" hidden></del>
+
+                        <span class="current-price">
+                            <span id="variant-price">{{ variants.0.effective_price|floatformat:"0g" }}</span> Ks
+                        </span>
+
+                        <span id="discount-badge" class="sale-badge" hidden></span>
+                    </div>
+
+                    <p id="variant-stock" aria-live="polite">
+                        {{ variants.0.stock }} available in stock
+                    </p>
+
+                    <section class="customization-panel">
+                        <h2>Make it yours</h2>
+
+                        <p class="customization-help">
+                            Choose available upgrades for your keyboard.
+                            Additional charges are shown before adding to cart.
+                        </p>
+
+                        {% for variant in variants %}
+                            <div
+                                class="variant-customizations"
+                                data-variant-id="{{ variant.id }}"
+                                {% if not forloop.first %}hidden{% endif %}
+                            >
+                                {% regroup variant.options.all by option_type as option_groups %}
+
+                                {% for group in option_groups %}
+                                    <div class="option-group">
+                                        <label for="option-{{ variant.id }}-{{ group.grouper }}">
+                                            {{ group.grouper|cut:"_"|capfirst }}
+                                        </label>
+
+                                        <select
+                                            id="option-{{ variant.id }}-{{ group.grouper }}"
+                                            name="selected_option_ids"
+                                            data-option-type="{{ group.grouper }}"
+                                        >
+                                            <option value="">
+                                                Use standard configuration
+                                            </option>
+
+                                            {% for option in group.list %}
+                                                <option
+                                                    value="{{ option.id }}"
+                                                    data-extra-price="{{ option.extra_price }}"
+                                                    {% if not option.is_available or option.stock < 1 %}disabled{% endif %}
+                                                >
+                                                    {{ option.choice_name }}
+                                                    {% if option.extra_price > 0 %}
+                                                        (+{{ option.extra_price|floatformat:"0g" }} Ks)
+                                                    {% else %}
+                                                        (Included)
+                                                    {% endif %}
+                                                    {% if not option.is_available or option.stock < 1 %}
+                                                        — Unavailable
+                                                    {% endif %}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+
+                                        <p class="option-price">
+                                            {% if group.grouper == "switch" %}
+                                                Switch choices depend on your selected configuration.
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                {% empty %}
+                                    <p class="customization-help">
+                                        No additional customization options are configured for this variant yet.
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        <div class="customization-total">
+                            <span>Price per keyboard</span>
+                            <span><span id="customization-total">{{ variants.0.effective_price|floatformat:"0g" }}</span> Ks</span>
+                        </div>
+
+                        <p
+                            id="price-status"
+                            class="price-status"
+                            aria-live="polite"
+                        >
+                            Select your options to preview the price.
+                        </p>
+                    </section>
+
+                    <label for="product-quantity">Quantity</label>
+
+                    <input
+                        id="product-quantity"
+                        type="number"
+                        name="quantity"
+                        value="1"
+                        min="1"
+                        max="{{ variants.0.stock }}"
+                        required
+                    >
+
+                    <button type="submit" class="buy-button" id="add-to-cart-button">
+                        Add to Cart
+                    </button>
+                </form>
+            {% else %}
+                <p class="detail-price">
+                    {{ product.price|floatformat:"0g" }} Ks
+                </p>
+
+                <p>Currently unavailable — no in-stock configurations.</p>
+            {% endif %}
+
+            <p>
+                <a href="{% url 'cart:cart_detail' %}">View Cart</a>
             </p>
 
             <div class="specification-box">
@@ -41,30 +283,252 @@
                     <span>Category</span>
                     <strong>{{ product.category.name }}</strong>
                 </div>
+
                 <div class="spec-row">
                     <span>Layout</span>
-                    <strong>{{ product.layout|default:"Not specified" }}</strong>
+                    <strong>{{ product.layout|default:"See configurations above" }}</strong>
                 </div>
+
                 <div class="spec-row">
                     <span>Connection</span>
-                    <strong>{{ product.connection_type|default:"Not specified" }}</strong>
+                    <strong>{{ product.connection_type|default:"See configurations above" }}</strong>
                 </div>
+
                 <div class="spec-row">
                     <span>Availability</span>
                     <strong>
-                        {% if product.stock > 0 %}
-                            In stock ({{ product.stock }})
+                        {% if variants %}
+                            In stock
                         {% else %}
                             Out of stock
                         {% endif %}
                     </strong>
                 </div>
             </div>
-
-            <button class="buy-button" disabled>
-                Shopping cart coming soon
-            </button>
         </section>
     </main>
+
+    {% if variants %}
+        <script>
+            const variantSelect = document.getElementById("variant-select");
+            const priceDisplay = document.getElementById("variant-price");
+            const originalPriceDisplay = document.getElementById("original-price");
+            const discountBadge = document.getElementById("discount-badge");
+            const stockDisplay = document.getElementById("variant-stock");
+            const quantityInput = document.getElementById("product-quantity");
+            const cartForm = document.getElementById("add-to-cart-form");
+            const totalDisplay = document.getElementById("customization-total");
+            const priceStatus = document.getElementById("price-status");
+            const addToCartButton = document.getElementById("add-to-cart-button");
+
+            let previewRequest = 0;
+            let previewIsValid = true;
+
+            function formatKs(n) {
+                return Math.round(n).toLocaleString("en-US");
+            }
+
+            function getSelectedVariant() {
+                return variantSelect.selectedOptions[0];
+            }
+
+            function getActiveCustomizationPanel() {
+                const variantId = variantSelect.value;
+
+                return Array.from(
+                    document.querySelectorAll(".variant-customizations")
+                ).find(panel => panel.dataset.variantId === variantId);
+            }
+
+            function getSelectedOptionIds() {
+                const panel = getActiveCustomizationPanel();
+
+                if (!panel) {
+                    return [];
+                }
+
+                return Array.from(
+                    panel.querySelectorAll('select[name="selected_option_ids"]')
+                )
+                    .map(select => select.value)
+                    .filter(Boolean);
+            }
+
+            function setPriceStatus(message, isError = false) {
+                priceStatus.textContent = message;
+                priceStatus.classList.toggle("error", isError);
+            }
+
+            function updateDiscount(price, compareAt) {
+                const onSale = compareAt > price && compareAt > 0;
+
+                originalPriceDisplay.hidden = !onSale;
+                discountBadge.hidden = !onSale;
+
+                if (onSale) {
+                    originalPriceDisplay.textContent = `${formatKs(compareAt)} Ks`;
+
+                    const discount = Math.round(
+                        ((compareAt - price) / compareAt) * 100
+                    );
+
+                    discountBadge.textContent = `${discount}% OFF`;
+                } else {
+                    originalPriceDisplay.textContent = "";
+                    discountBadge.textContent = "";
+                }
+            }
+
+            async function updatePricePreview() {
+                const requestNumber = ++previewRequest;
+                const selectedVariant = getSelectedVariant();
+                const basePrice = Number(selectedVariant.dataset.price);
+                const compareAt = Number(selectedVariant.dataset.comparePrice);
+                const optionIds = getSelectedOptionIds();
+
+                previewIsValid = false;
+                addToCartButton.disabled = true;
+                setPriceStatus("Checking price and option availability…");
+
+                try {
+                    const csrfToken = cartForm.querySelector(
+                        '[name="csrfmiddlewaretoken"]'
+                    ).value;
+
+                    const response = await fetch(
+                        selectedVariant.dataset.previewUrl,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRFToken": csrfToken,
+                            },
+                            credentials: "same-origin",
+                            body: JSON.stringify({
+                                option_ids: optionIds,
+                            }),
+                        }
+                    );
+
+                    const data = await response.json();
+
+                    if (requestNumber !== previewRequest) {
+                        return;
+                    }
+
+                    if (!response.ok) {
+                        throw new Error(
+                            data.error || "Unable to validate your selection."
+                        );
+                    }
+
+                    const price = Number(data.unit_price);
+
+                    priceDisplay.textContent = formatKs(price);
+                    totalDisplay.textContent = formatKs(price);
+
+                    updateDiscount(price, compareAt);
+
+                    previewIsValid = true;
+                    addToCartButton.disabled = false;
+
+                    setPriceStatus(
+                        optionIds.length
+                            ? "Your selected configuration is available."
+                            : "Standard configuration selected."
+                    );
+                } catch (error) {
+                    if (requestNumber !== previewRequest) {
+                        return;
+                    }
+
+                    // Never present an unverified selection as a valid price.
+                    priceDisplay.textContent = formatKs(basePrice);
+                    totalDisplay.textContent = formatKs(basePrice);
+                    updateDiscount(basePrice, compareAt);
+
+                    previewIsValid = false;
+                    addToCartButton.disabled = true;
+
+                    setPriceStatus(
+                        error.message || "Price verification failed. Please try again.",
+                        true
+                    );
+                }
+            }
+
+            
+function updateVariantDetails() {
+    const selectedVariant = getSelectedVariant();
+    const stock = Number(selectedVariant.dataset.stock);
+    const mainImage = document.querySelector(".detail-image-panel img");
+
+if (mainImage && selectedVariant.dataset.imageUrl) {
+    mainImage.src = selectedVariant.dataset.imageUrl;
+}
+
+    cartForm.action = selectedVariant.dataset.url;
+
+    document.querySelectorAll(".variant-customizations").forEach(panel => {
+        const isActive =
+            panel.dataset.variantId === variantSelect.value;
+
+        panel.hidden = !isActive;
+
+        panel.querySelectorAll("select").forEach(select => {
+            select.disabled = !isActive;
+        });
+    });
+
+    stockDisplay.textContent = `${stock} available in stock`;
+
+    quantityInput.max = stock;
+
+    if (
+        Number(quantityInput.value) > stock ||
+        Number(quantityInput.value) < 1
+    ) {
+        quantityInput.value = stock > 0 ? 1 : 0;
+    }
+
+    updatePricePreview();
+}
+    document.querySelectorAll(".variant-photo-button").forEach(button => {
+    button.addEventListener("click", () => {
+        variantSelect.value = button.dataset.variantId;
+        variantSelect.dispatchEvent(new Event("change"));
+    });
+});
+    document.querySelectorAll(".variant-photo-button").forEach(button => {
+    button.addEventListener("dblclick", () => {
+        const image = button.querySelector("img");
+
+        if (image) {
+            window.open(image.src, "_blank", "noopener");
+        }
+    });
+});
+
+            variantSelect.addEventListener("change", updateVariantDetails);
+
+            document.querySelectorAll(
+                '.variant-customizations select[name="selected_option_ids"]'
+            ).forEach(select => {
+                select.addEventListener("change", updatePricePreview);
+            });
+
+            cartForm.addEventListener("submit", event => {
+                if (!previewIsValid) {
+                    event.preventDefault();
+                    setPriceStatus(
+                        "Please wait for a valid price preview before adding to cart.",
+                        true
+                    );
+                }
+            });
+
+            updateVariantDetails();
+        </script>
+    {% endif %}
 </body>
 </html>

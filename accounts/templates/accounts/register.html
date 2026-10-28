@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | KEYNOVA</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #0c0b10;
+            color: #f5f3ff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 460px;
+            padding: 36px;
+            background: #171520;
+            border: 1px solid #30283f;
+            border-radius: 18px;
+        }
+
+        .brand {
+            color: #c4b5fd;
+            text-align: center;
+            letter-spacing: 5px;
+            font-weight: bold;
+        }
+
+        h1 { text-align: center; }
+
+        .subtitle {
+            text-align: center;
+            color: #aaa4bd;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            margin: 18px 0 8px;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #393247;
+            border-radius: 9px;
+            background: #0c0b10;
+            color: white;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 24px;
+            border: 0;
+            border-radius: 9px;
+            background: #a78bfa;
+            color: #171520;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .helptext, ul {
+            color: #aaa4bd;
+            font-size: 12px;
+        }
+
+        .errorlist { color: #fca5a5; }
+
+        .footer {
+            text-align: center;
+            margin-top: 22px;
+            color: #aaa4bd;
+        }
+
+        a { color: #c4b5fd; }
+    </style>
+</head>
+<body>
+    <main class="auth-card">
+        <p class="brand">KEYNOVA</p>
+        <h1>Create your account.</h1>
+        <p class="subtitle">Join the KEYNOVA community.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            {% for field in form %}
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+
+                {{ field }}
+
+                {% if field.help_text %}
+                    <div class="helptext">{{ field.help_text|safe }}</div>
+                {% endif %}
+
+                {{ field.errors }}
+            {% endfor %}
+
+            <button type="submit">Create Account →</button>
+        </form>
+
+        <p class="footer">
+            Already have an account?
+            <a href="{% url 'accounts:login' %}">Sign in</a>
+        </p>
+
+        <p class="footer">
+            <a href="/">← Back to store</a>
+        </p>
+    </main>
+</body>
+</html>

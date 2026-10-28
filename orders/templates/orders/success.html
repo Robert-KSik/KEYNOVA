@@ -1,0 +1,401 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | KEYNOVA</title>
+    <link rel="stylesheet" href="{% static 'products/style.css' %}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #0b0b0f;
+            color: #f5f5f7;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .success-page {
+            width: min(100% - 32px, 760px);
+            margin: 48px auto 80px;
+        }
+
+        .success-card {
+            overflow: hidden;
+            background: #14141b;
+            border: 1px solid #30303c;
+            border-radius: 20px;
+        }
+
+        .success-header {
+            padding: 36px 28px;
+            text-align: center;
+            background: linear-gradient(
+                135deg,
+                rgba(167, 139, 250, 0.15),
+                rgba(139, 92, 246, 0.03)
+            );
+            border-bottom: 1px solid #30303c;
+        }
+
+        .success-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 66px;
+            height: 66px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: rgba(167, 139, 250, 0.14);
+            border: 1px solid #a78bfa;
+            color: #c4b5fd;
+            font-size: 32px;
+        }
+
+        .success-header h1 {
+            margin: 0 0 12px;
+            font-size: clamp(26px, 5vw, 36px);
+            letter-spacing: -0.8px;
+        }
+
+        .success-header p {
+            margin: 0;
+            color: #a1a1aa;
+            line-height: 1.7;
+        }
+
+        .order-number {
+            display: inline-block;
+            margin-top: 22px;
+            padding: 10px 16px;
+            border: 1px solid #49405f;
+            border-radius: 9px;
+            background: #1d1928;
+            color: #c4b5fd;
+            font-weight: 700;
+        }
+
+        .success-content {
+            padding: 28px;
+        }
+
+        .section-title {
+            margin: 0 0 18px;
+            font-size: 18px;
+        }
+
+        .details-list {
+            display: grid;
+            gap: 0;
+            margin: 0 0 28px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .details-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 14px 0;
+            border-bottom: 1px solid #292933;
+        }
+
+        .detail-label {
+            color: #a1a1aa;
+            flex-shrink: 0;
+        }
+
+        .detail-value {
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: #292333;
+            color: #c4b5fd;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 16px 0;
+            border-bottom: 1px solid #292933;
+        }
+
+        .item-name {
+            font-weight: 700;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .item-meta {
+            margin-top: 6px;
+            color: #a1a1aa;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .item-price {
+            flex-shrink: 0;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .totals {
+            margin-top: 22px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 9px 0;
+            color: #b7b7c2;
+        }
+
+        .grand-total {
+            margin-top: 10px;
+            padding-top: 20px;
+            border-top: 1px solid #3a3a47;
+            color: #fff;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .payment-notice {
+            margin-top: 24px;
+            padding: 16px;
+            border: 1px solid #51432d;
+            border-radius: 10px;
+            background: #211c14;
+            color: #f4cf8a;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .success-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .primary-link,
+        .secondary-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 12px 18px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .primary-link {
+            flex: 1;
+            background: #a78bfa;
+            color: #17131f;
+        }
+
+        .primary-link:hover {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .secondary-link {
+            border: 1px solid #3b3b48;
+            color: #e4e4ed;
+        }
+
+        .secondary-link:hover {
+            border-color: #a78bfa;
+        }
+
+        .success-footer {
+            padding: 22px;
+            text-align: center;
+            color: #777784;
+            font-size: 12px;
+        }
+
+        @media (max-width: 520px) {
+            .success-page {
+                margin-top: 24px;
+            }
+
+            .success-header,
+            .success-content {
+                padding: 22px 18px;
+            }
+
+            .details-list li {
+                gap: 12px;
+            }
+
+            .order-item {
+                gap: 10px;
+            }
+
+            .item-price {
+                font-size: 13px;
+            }
+
+            .success-actions {
+                flex-direction: column;
+            }
+
+            .primary-link,
+            .secondary-link {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <a class="logo" href="/">KEYNOVA<span>.</span></a>
+    </header>
+
+    <main class="success-page">
+        <article class="success-card">
+            <header class="success-header">
+                <div class="success-icon" aria-hidden="true">&#10003;</div>
+
+                <h1>Order received.</h1>
+
+                <p>
+                    Thanks for choosing KEYNOVA. Your order has been
+                    recorded successfully.
+                </p>
+
+                <div class="order-number">
+                    Order #{{ order.id }}
+                </div>
+            </header>
+
+            <div class="success-content">
+                <h2 class="section-title">Order details</h2>
+
+                <ul class="details-list">
+                    <li>
+                        <span class="detail-label">Customer</span>
+                        <span class="detail-value">{{ order.full_name }}</span>
+                    </li>
+
+                    <li>
+                        <span class="detail-label">Payment method</span>
+                        <span class="detail-value">
+                            {{ order.get_payment_method_display }}
+                        </span>
+                    </li>
+
+                    <li>
+                        <span class="detail-label">Payment status</span>
+                        <span class="detail-value">
+                            <span class="status">
+                                {{ order.get_payment_status_display }}
+                            </span>
+                        </span>
+                    </li>
+
+                    <li>
+                        <span class="detail-label">Order status</span>
+                        <span class="detail-value">
+                            <span class="status">
+                                {{ order.get_order_status_display }}
+                            </span>
+                        </span>
+                    </li>
+                </ul>
+
+                <h2 class="section-title">Order summary</h2>
+
+                <div class="order-items">
+                    {% for item in order.items.all %}
+                        <div class="order-item">
+                            <div>
+                                <div class="item-name">
+                                    {{ item.product_name }}
+                                </div>
+
+                                <div class="item-meta">
+                                    {{ item.variant_name }}<br>
+                                    Quantity: {{ item.quantity }}
+                                    × ${{ item.unit_price|floatformat:2 }}
+                                </div>
+                            </div>
+
+                            <div class="item-price">
+                                ${{ item.line_total|floatformat:2 }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="totals">
+                    <div class="total-row">
+                        <span>Subtotal</span>
+                        <span>
+                            ${{ order.subtotal|floatformat:2 }}
+                        </span>
+                    </div>
+
+                    <div class="total-row">
+                        <span>Delivery</span>
+                        <span>
+                            ${{ order.delivery_fee|floatformat:2 }}
+                        </span>
+                    </div>
+
+                    <div class="total-row grand-total">
+                        <span>Total</span>
+                        <span>
+                            ${{ order.total|floatformat:2 }}
+                            {{ order.currency }}
+                        </span>
+                    </div>
+                </div>
+
+                {% if order.payment_method != "cod" %}
+                    <div class="payment-notice">
+                        <strong>Demo payment notice</strong><br>
+                        This payment method is in demo mode. No real
+                        payment has been processed. Please do not treat
+                        this order as paid.
+                    </div>
+                {% endif %}
+
+                <div class="success-actions">
+                    <a class="primary-link" href="/">
+                        Continue shopping &rarr;
+                    </a>
+
+                    <a class="secondary-link"
+                       href="{% url 'cart:cart_detail' %}">
+                        View cart
+                    </a>
+                </div>
+            </div>
+
+            <footer class="success-footer">
+                KEYNOVA &mdash; Built for your next setup.
+            </footer>
+        </article>
+    </main>
+</body>
+</html>

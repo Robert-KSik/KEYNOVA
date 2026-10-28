@@ -1,0 +1,106 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders | KEYNOVA</title>
+    <link rel="stylesheet" href="{% static 'products/style.css' %}">
+    <style>
+        .orders-page {
+            max-width: 1000px;
+            margin: 70px auto;
+            padding: 24px;
+            color: #f5f3ff;
+        }
+        .orders-page h1 {
+            margin-bottom: 8px;
+        }
+        .orders-subtitle {
+            color: #aaa4bd;
+            margin-bottom: 32px;
+        }
+        .order-card {
+            background: #171520;
+            border: 1px solid #30283f;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 18px;
+        }
+        .order-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+        .order-number {
+            color: #c4b5fd;
+            font-weight: 700;
+        }
+        .order-status {
+            color: #c4b5fd;
+        }
+        .order-total {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 16px;
+        }
+        .order-item {
+            color: #c8c3d6;
+            margin: 10px 0;
+        }
+        .empty-orders {
+            padding: 40px 20px;
+            background: #171520;
+            border-radius: 16px;
+            text-align: center;
+        }
+        .orders-link {
+            display: inline-block;
+            margin-top: 18px;
+            color: #c4b5fd;
+        }
+    </style>
+</head>
+<body>
+    <main class="orders-page">
+        <h1>My Orders</h1>
+        <p class="orders-subtitle">Your KEYNOVA purchase history.</p>
+
+        {% for order in orders %}
+            <section class="order-card">
+                <div class="order-top">
+                    <div>
+                        <div class="order-number">Order #{{ order.id }}</div>
+                        <small>{{ order.created_at|date:"M d, Y · H:i" }}</small>
+                    </div>
+                    <div class="order-status">
+                        {{ order.get_order_status_display }}
+                    </div>
+                </div>
+
+                {% for item in order.items.all %}
+                    <div class="order-item">
+                        {{ item.product_name }} — {{ item.variant_name }}
+                        × {{ item.quantity }}
+                    </div>
+                {% endfor %}
+
+                <p>Payment: {{ order.get_payment_status_display }}</p>
+
+                <div class="order-total">
+                    Total: {{ order.currency }} {{ order.total|floatformat:2 }}
+                </div>
+            </section>
+        {% empty %}
+            <div class="empty-orders">
+                <h2>No orders yet</h2>
+                <p>Your keyboard journey starts here.</p>
+                <a class="orders-link" href="/">Explore KEYNOVA →</a>
+            </div>
+        {% endfor %}
+    </main>
+</body>
+</html>

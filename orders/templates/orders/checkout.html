@@ -1,0 +1,724 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | KEYNOVA</title>
+    <link rel="stylesheet" href="{% static 'products/style.css' %}">
+
+    <style>
+        :root {
+            --bg: #100c18;
+            --surface: #191321;
+            --surface-light: #21182d;
+            --border: #382846;
+            --purple: #cba6f7;
+            --purple-bright: #e0c7ff;
+            --text: #f6f0fc;
+            --muted: #a99bb7;
+            --silver: #d5cedd;
+            --error: #ff9999;
+        }
+
+        body {
+            background:
+                radial-gradient(ellipse at 75% 0%, #352044 0%, transparent 42%),
+                var(--bg);
+            color: var(--text);
+        }
+
+        .checkout-page {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 46px 24px 80px;
+            color: var(--text);
+        }
+
+        .eyebrow-label {
+            color: var(--purple);
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .checkout-heading h1 {
+            font-size: clamp(30px, 5vw, 44px);
+            letter-spacing: -1.5px;
+            font-weight: 600;
+            margin: 12px 0 10px;
+        }
+
+        .checkout-heading p {
+            color: var(--muted);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* Progress steps */
+        .steps {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 28px 0 30px;
+            font-size: 12px;
+            color: var(--muted);
+            flex-wrap: wrap;
+        }
+
+        .step {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .step-dot {
+            width: 24px;
+            height: 24px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .step.active { color: var(--purple-bright); }
+
+        .step.active .step-dot {
+            background: var(--purple);
+            border-color: var(--purple);
+            color: #160e20;
+            box-shadow: 0 0 16px rgba(203, 166, 247, 0.35);
+        }
+
+        .step-line {
+            width: 34px;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Panels */
+        .checkout-panel {
+            background: linear-gradient(145deg, #21182d, #17111f);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            animation: rise 0.45s ease both;
+        }
+
+        .checkout-panel:nth-of-type(2) { animation-delay: 0.08s; }
+
+        .checkout-panel h2 {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 0 0 6px;
+        }
+
+        .panel-sub {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 0 22px;
+            line-height: 1.6;
+        }
+
+        /* Delivery fields */
+        .field-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .field { min-width: 0; }
+        .field.full { grid-column: 1 / -1; }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--silver);
+        }
+
+        .field input,
+        .field textarea {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #100c18;
+            color: var(--text);
+            font: inherit;
+            font-size: 14px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .field textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .field input::placeholder,
+        .field textarea::placeholder { color: #6f6180; }
+
+        .field input:focus,
+        .field textarea:focus {
+            outline: none;
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(203, 166, 247, 0.15);
+        }
+
+        .field-error {
+            display: block;
+            margin-top: 7px;
+            color: var(--error);
+            font-size: 12px;
+        }
+
+        .checkout-error {
+            padding: 14px 16px;
+            margin-bottom: 22px;
+            border: 1px solid #b85c5c;
+            border-radius: 10px;
+            color: var(--error);
+            background: rgba(255, 153, 153, 0.08);
+            font-size: 14px;
+        }
+
+        .checkout-error ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        /* Payment method cards */
+        .pay-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            align-items: start;
+        }
+
+        .pay-option {
+            position: relative;
+            display: block;
+            cursor: pointer;
+        }
+
+        /* The real radio stays accessible but invisible. */
+        .pay-option input {
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            pointer-events: none;
+        }
+
+        .pay-card {
+            position: relative;
+            display: block;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: #130f1b;
+            overflow: hidden;
+            transition:
+                transform 0.25s cubic-bezier(.2, .8, .2, 1),
+                border-color 0.25s ease,
+                background 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        /* Soft glow that fades in when selected */
+        .pay-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                ellipse at top right,
+                rgba(203, 166, 247, 0.22),
+                transparent 65%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .pay-option:hover .pay-card {
+            transform: translateY(-3px);
+            border-color: rgba(203, 166, 247, 0.55);
+        }
+
+        .pay-option input:focus-visible + .pay-card {
+            outline: 2px solid var(--purple);
+            outline-offset: 2px;
+        }
+
+        .pay-option input:checked + .pay-card {
+            border-color: var(--purple);
+            background: #1d1429;
+            box-shadow:
+                0 0 0 1px var(--purple),
+                0 12px 34px rgba(139, 92, 246, 0.22);
+        }
+
+        .pay-option input:checked + .pay-card::before { opacity: 1; }
+
+        .pay-top {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .pay-badge {
+            flex-shrink: 0;
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: linear-gradient(145deg, #3a2650, #231633);
+            border: 1px solid #4a3463;
+            color: var(--purple-bright);
+            font-size: 18px;
+            font-weight: 800;
+            transition: transform 0.3s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        .pay-badge svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.7;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .pay-option input:checked + .pay-card .pay-badge {
+            transform: scale(1.08) rotate(-4deg);
+            background: linear-gradient(145deg, #cba6f7, #8b5cf6);
+            border-color: transparent;
+            color: #160e20;
+        }
+
+        .pay-text { min-width: 0; }
+
+        .pay-name {
+            display: block;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .pay-tag {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            border: 1px solid #4a3463;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .pay-tag.now {
+            color: var(--purple-bright);
+            border-color: rgba(203, 166, 247, 0.4);
+        }
+
+        /* Tick that pops in when selected */
+        .pay-check {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 24px;
+            height: 24px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            transition: all 0.25s ease;
+        }
+
+        .pay-check svg {
+            width: 13px;
+            height: 13px;
+            stroke: #160e20;
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transform: scale(0);
+            transition: transform 0.3s cubic-bezier(.3, 1.6, .5, 1);
+        }
+
+        .pay-option input:checked + .pay-card .pay-check {
+            background: var(--purple);
+            border-color: var(--purple);
+            box-shadow: 0 0 14px rgba(203, 166, 247, 0.5);
+        }
+
+        .pay-option input:checked + .pay-card .pay-check svg {
+            transform: scale(1);
+        }
+
+        /* Description that slides open for the chosen method */
+        .pay-detail {
+            position: relative;
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.35s ease;
+        }
+
+        .pay-detail-clip {
+            display: block;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .pay-detail-text {
+            display: block;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid #ffffff12;
+            color: var(--muted);
+            font-size: 12.5px;
+            line-height: 1.65;
+            opacity: 0;
+            transform: translateY(-4px);
+            transition: opacity 0.3s ease 0.08s, transform 0.3s ease 0.08s;
+        }
+
+        .pay-option input:checked + .pay-card .pay-detail {
+            grid-template-rows: 1fr;
+        }
+
+        .pay-option input:checked + .pay-card .pay-detail-text {
+            opacity: 1;
+            transform: none;
+        }
+
+        .pay-notice {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0 0;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: rgba(16, 12, 24, 0.5);
+            color: var(--muted);
+            font-size: 12.5px;
+            line-height: 1.65;
+        }
+
+        .pay-notice svg {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            margin-top: 1px;
+            stroke: var(--purple);
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Submit row */
+        .checkout-actions {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .checkout-submit {
+            padding: 15px 26px;
+            border: 0;
+            border-radius: 10px;
+            background: var(--purple);
+            color: #160e20;
+            font-size: 14px;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checkout-submit:hover {
+            background: var(--purple-bright);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(203, 166, 247, 0.2);
+        }
+
+        .checkout-submit:disabled {
+            opacity: 0.6;
+            cursor: wait;
+            transform: none;
+        }
+
+        .checkout-back {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .checkout-back:hover { color: var(--purple-bright); }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        @media (max-width: 680px) {
+            .checkout-page { padding: 32px 16px 56px; }
+            .checkout-panel { padding: 20px; }
+            .field-grid,
+            .pay-grid { grid-template-columns: 1fr; }
+            .field.full { grid-column: auto; }
+            .step-line { width: 18px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <a class="logo" href="/">KEYNOVA<span>.</span></a>
+        <a class="cart-back-link" href="{% url 'cart:cart_detail' %}">
+            &larr; Back to cart
+        </a>
+    </header>
+
+    <main class="checkout-page">
+        <div class="checkout-heading">
+            <div class="eyebrow-label">Checkout / 001</div>
+            <h1>Almost yours.</h1>
+            <p>
+                Tell us where to send your keyboard, then choose
+                how you'd like to pay.
+            </p>
+        </div>
+
+        <div class="steps" aria-label="Checkout progress">
+            <span class="step active">
+                <span class="step-dot">1</span> Your details
+            </span>
+            <span class="step-line"></span>
+            <span class="step">
+                <span class="step-dot">2</span> Payment
+            </span>
+            <span class="step-line"></span>
+            <span class="step">
+                <span class="step-dot">3</span> Confirmed
+            </span>
+        </div>
+
+        <form method="post" class="checkout-form" id="checkout-form" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="checkout-error">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <section class="checkout-panel">
+                <h2>Delivery information</h2>
+                <p class="panel-sub">
+                    We'll use these details to deliver your order
+                    and contact you about it.
+                </p>
+
+                <div class="field-grid">
+                    {% for field in form %}
+                        {% if field.name != "payment_method" %}
+                            <div class="field{% if field.name == 'email' or field.name == 'address' or field.name == 'delivery_notes' %} full{% endif %}">
+                                <label for="{{ field.id_for_label }}">
+                                    {{ field.label }}
+                                </label>
+
+                                {{ field }}
+
+                                {% for error in field.errors %}
+                                    <span class="field-error">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="checkout-panel">
+                <h2>Payment method</h2>
+                <p class="panel-sub">
+                    Pick one. You can't be charged by choosing here &mdash;
+                    for wallet and bank payments you'll see our account
+                    details on the next step.
+                </p>
+
+                {% if form.payment_method.errors %}
+                    <div class="checkout-error">
+                        {% for error in form.payment_method.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="pay-grid" role="radiogroup" aria-label="Payment method">
+                    {% for radio in form.payment_method %}
+                        <label class="pay-option" for="{{ radio.id_for_label }}">
+                            <input
+                                type="radio"
+                                name="{{ radio.data.name }}"
+                                id="{{ radio.id_for_label }}"
+                                value="{{ radio.data.value }}"
+                                {% if radio.data.selected %}checked{% endif %}
+                                required
+                            >
+
+                            <span class="pay-card">
+                                <span class="pay-top">
+                                    <span class="pay-badge" aria-hidden="true">
+                                        {% if radio.data.value == "cod" %}
+                                            <svg viewBox="0 0 24 24">
+                                                <rect x="2.5" y="6" width="19" height="12" rx="2"/>
+                                                <circle cx="12" cy="12" r="2.6"/>
+                                                <path d="M6 9.5v.01M18 14.5v.01"/>
+                                            </svg>
+                                        {% elif radio.data.value == "kbz" %}K
+                                        {% elif radio.data.value == "wave" %}W
+                                        {% elif radio.data.value == "aya" %}A
+                                        {% elif radio.data.value == "bank" %}
+                                            <svg viewBox="0 0 24 24">
+                                                <path d="M3 10 12 4l9 6"/>
+                                                <path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8"/>
+                                                <path d="M3 20h18"/>
+                                            </svg>
+                                        {% else %}$
+                                        {% endif %}
+                                    </span>
+
+                                    <span class="pay-text">
+                                        <span class="pay-name">{{ radio.choice_label }}</span>
+
+                                        {% if radio.data.value == "cod" %}
+                                            <span class="pay-tag">Pay on delivery</span>
+                                        {% else %}
+                                            <span class="pay-tag now">Pay now</span>
+                                        {% endif %}
+                                    </span>
+
+                                    <span class="pay-check" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M5 12.5 10 17.5 19 7.5"/>
+                                        </svg>
+                                    </span>
+                                </span>
+
+                                <span class="pay-detail">
+                                    <span class="pay-detail-clip">
+                                        <span class="pay-detail-text">
+                                            {% if radio.data.value == "cod" %}
+                                                Nothing to pay today. Our courier collects
+                                                the exact amount in cash when your keyboard
+                                                arrives.
+                                            {% elif radio.data.value == "kbz" %}
+                                                Place your order and we'll show our KBZPay
+                                                account and the exact amount. Pay in the
+                                                app, then enter your Transaction No.
+                                            {% elif radio.data.value == "wave" %}
+                                                Place your order and we'll show our Wave Pay
+                                                account and the exact amount. Pay in the
+                                                app, then enter your Transaction ID.
+                                            {% elif radio.data.value == "aya" %}
+                                                Place your order and we'll show our AYA Pay
+                                                account and the exact amount. Pay in the
+                                                app, then enter your Transaction ID.
+                                            {% elif radio.data.value == "bank" %}
+                                                Place your order and we'll show our bank
+                                                account and the exact amount. Transfer it,
+                                                then enter your reference number.
+                                            {% endif %}
+                                        </span>
+                                    </span>
+                                </span>
+                            </span>
+                        </label>
+                    {% endfor %}
+                </div>
+
+                <div class="pay-notice">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 3 4 6v6c0 4.5 3.2 7.6 8 9 4.8-1.4 8-4.5 8-9V6l-8-3Z"/>
+                        <path d="m9 12 2 2 4-4"/>
+                    </svg>
+                    <span>
+                        We never ask for card numbers or PINs. Wallet and
+                        bank payments are checked by our team before your
+                        order is confirmed.
+                    </span>
+                </div>
+            </section>
+
+            <div class="checkout-actions">
+                <button type="submit" class="checkout-submit" id="checkout-submit">
+                    Continue &rarr;
+                </button>
+
+                <a class="checkout-back" href="{% url 'cart:cart_detail' %}">
+                    Return to cart
+                </a>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        (function () {
+            const form = document.getElementById("checkout-form");
+            const button = document.getElementById("checkout-submit");
+            const radios = form.querySelectorAll('input[name="payment_method"]');
+
+            function updateButton() {
+                const chosen = form.querySelector(
+                    'input[name="payment_method"]:checked'
+                );
+
+                if (!chosen) {
+                    button.innerHTML = "Continue &rarr;";
+                } else if (chosen.value === "cod") {
+                    button.innerHTML = "Place order &rarr;";
+                } else {
+                    button.innerHTML = "Continue to payment &rarr;";
+                }
+            }
+
+            radios.forEach(radio => radio.addEventListener("change", updateButton));
+            updateButton();
+
+            // Stop accidental double-clicks from creating two orders.
+            form.addEventListener("submit", () => {
+                button.disabled = true;
+                button.textContent = "Placing your order…";
+            });
+
+            // Re-enable if the user comes back with the browser's back button.
+            window.addEventListener("pageshow", () => {
+                button.disabled = false;
+                updateButton();
+            });
+        })();
+    </script>
+</body>
+</html>
