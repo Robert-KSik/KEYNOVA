@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from .models import Brand, Category, Product, ProductVariant, VariantOption
+from .models import Brand, Category, Product, ProductVariant, VariantOption , ProductSpec
 
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
@@ -99,3 +99,7 @@ class VariantOptionAdmin(admin.ModelAdmin):
     )
 
     list_editable = ("extra_price", "stock", "is_available")
+
+class ProductSpecInline(admin.TabularInline):
+    model = ProductSpec
+    extra = 3

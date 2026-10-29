@@ -1569,3 +1569,18 @@ padding: 18px;
         height: 165px;
     }
 }
+.spec-group-title {
+    margin: 28px 0 10px;
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.policy-box ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #c1c1c9;
+    font-size: 13px;
+    line-height: 1.9;
+}

@@ -283,6 +283,31 @@
                     <span>Category</span>
                     <strong>{{ product.category.name }}</strong>
                 </div>
+                {% for group in product.grouped_specs %}
+    <h3 class="spec-group-title">{{ group.label }}</h3>
+    <div class="specification-box">
+        {% for spec in group.rows %}
+            <div class="spec-row">
+                <span>{{ spec.name }}</span>
+                <strong>{{ spec.value }}</strong>
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+<div class="policy-box">
+    <h3 class="spec-group-title">Shipping and warranty</h3>
+    <ul>
+        {% if product.warranty_months %}
+            <li>{{ product.warranty_months }}-month warranty against manufacturing defects.</li>
+        {% else %}
+            <li>No manufacturer warranty listed for this model.</li>
+        {% endif %}
+        <li>Orders are packed and shipped within 2 to 3 business days.</li>
+        <li>Delivery times depend on your location and are shown at checkout.</li>
+        <li>Returns are accepted within 7 days if the item is unused and in its original box.</li>
+    </ul>
+</div>
 
                 <div class="spec-row">
                     <span>Layout</span>

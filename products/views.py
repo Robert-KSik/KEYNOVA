@@ -4,6 +4,7 @@ from .catalog import brands_with_counts, catalog_products, featured_brands, find
 from .models import Product
 
 
+
 def home(request):
     brand = find_brand(request.GET.get("brand"))
     return render(
@@ -32,7 +33,7 @@ def product_cards(request):
 
 def product_detail(request, product_id):
     product = get_object_or_404(
-        Product.objects.select_related("brand", "category"),
+        Product.objects.select_related("brand", "category").prefetch_related("specs"),
         pk=product_id,
         is_available=True,
     )

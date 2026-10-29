@@ -54,107 +54,77 @@
         </section>
 
         <section class="catalog" id="products">
-            <div class="section-heading">
-                <div>
-                    <p class="eyebrow">THE COLLECTION</p>
-                    <h2>Find your setup.</h2>
-                </div>
-                <span class="catalog-label">KEYNOVA / PRODUCTS</span>
-            </div>
+           <div class="section-heading">
+    <div>
+        <p class="eyebrow">THE COLLECTION</p>
+        <h2>Find your setup.</h2>
+    </div>
 
-            <div class="product-grid">
-                {% for product in products %}
-                    {% with variant=product.variants.all|first %}
-                    <article class="product-card">
-                        <a href="{% url 'product_detail' product.id %}"
-                           class="product-card-link">
+    <div class="brand-filter" id="brand-filter"
+         data-cards-url="{% url 'product_cards' %}"
+         data-active-brand="{{ active_brand.slug|default:'' }}">
 
-                            <div class="product-image">
-                                {% if product.image %}
-                                    <img src="{{ product.image.url }}"
-                                         alt="{{ product.name }}">
-                                {% else %}
-                                    <div class="image-placeholder">
-                                        KEYNOVA
-                                    </div>
-                                {% endif %}
+        <span class="catalog-label" id="catalog-label">
+            KEYNOVA / {{ active_brand.name|upper|default:"PRODUCTS" }}
+        </span>
 
-                                <span class="product-tag">
-                                    {{ product.category.name }}
-                                </span>
+        <div class="brand-bar">
+            <div class="brand-chips" id="brand-chips" role="group" aria-label="Filter by brand">
+                <span class="brand-indicator" aria-hidden="true"></span>
 
-                                {% if variant.is_on_sale %}
-                                <span class="sale-badge homepage-sale-badge">
-                                        {{ variant.discount_percentage }}% OFF
-                                    </span>
-                                {% endif %}
-                            </div>
+                <a class="brand-chip{% if not active_brand %} is-active{% endif %}"
+                   href="/" data-brand=""
+                   {% if not active_brand %}aria-current="true"{% endif %}>All</a>
 
-                            <div class="product-info">
-                                <p class="brand-name">
-                                    {{ product.brand.name }}
-                                </p>
-
-                                <h3>{{ product.name }}</h3>
-
-                                <p class="specs">
-                                    {{ product.layout|default:"Mechanical" }}
-                                    ·
-                                    {{ product.connection_type|default:"Premium build" }}
-                                </p>
-
-                                <div class="product-bottom">
-                                    <div class="homepage-price">
-                                        {% if variant %}
-                                            {% if variant.is_on_sale %}
-                                                <del class="original-price">
-                                                    {{ variant.compare_at_price|floatformat:"0g" }} Ks
-                                                </del>
-                                                <span class="price sale-current-price">
-                                                    {{ variant.effective_price|floatformat:"0g" }} Ks
-                                                </span>
-                                            {% else %}
-                                                <span class="price">
-                                                    {{ variant.effective_price|floatformat:"0g" }} Ks
-                                                </span>
-                                            {% endif %}
-                                        {% else %}
-                                            <span class="price">
-                                                {{ product.price|floatformat:"0g" }} Ks
-                                            </span>
-                                        {% endif %}
-                                    </div>
-
-                                    <span class="stock">
-                                        {% if variant %}
-                                            IN STOCK
-                                        {% else %}
-                                            VIEW OPTIONS
-                                        {% endif %}
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
-                    </article>
-                    {% endwith %}
-                {% empty %}
-                    <div class="empty-state">
-                        <h3>The collection is loading.</h3>
-                        <p>
-                            Our keyboards will appear here once you add
-                            products through the admin dashboard.
-                        </p>
-                        <a href="/admin/">MANAGE PRODUCTS ↗</a>
-                    </div>
+                {% for brand in featured_brands %}
+                    <a class="brand-chip{% if active_brand.pk == brand.pk %} is-active{% endif %}"
+                       href="?brand={{ brand.slug }}" data-brand="{{ brand.slug }}"
+                       {% if active_brand.pk == brand.pk %}aria-current="true"{% endif %}>{{ brand.name }}</a>
                 {% endfor %}
-            </div>
-        </section>
-    </main>
 
+                {% if active_brand and not active_brand.is_featured %}
+                    <a class="brand-chip is-active" href="?brand={{ active_brand.slug }}"
+                       data-brand="{{ active_brand.slug }}" data-pinned="1"
+                       aria-current="true">{{ active_brand.name }}</a>
+                {% endif %}
+            </div>
+
+            <button type="button" class="brand-more" id="brand-more"
+                    aria-expanded="false" aria-controls="brand-panel">
+                More brands <span class="brand-caret" aria-hidden="true">▾</span>
+            </button>
+        </div>
+
+        <div class="brand-panel" id="brand-panel" hidden>
+            <input type="search" class="brand-search" id="brand-search"
+                   placeholder="Search brands" aria-label="Search brands" autocomplete="off">
+            <ul class="brand-list">
+                {% for brand in all_brands %}
+                    <li>
+                        <a class="brand-option{% if active_brand.pk == brand.pk %} is-active{% endif %}"
+                           href="?brand={{ brand.slug }}" data-brand="{{ brand.slug }}"
+                           data-name="{{ brand.name }}">
+                            <span>{{ brand.name }}</span>
+                            <span class="brand-count">{{ brand.product_count }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+                <li class="brand-empty" id="brand-empty" hidden>No brand found.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<p class="sr-only" id="brand-status" role="status"></p>
+<div class="product-grid" id="product-grid">
+    {% include "products/_product_cards.html" %}
+</div>
+            
     <footer>
         <a class="logo" href="/">KEYNOVA<span>.</span></a>
         <p>Engineered for every keystroke.</p>
         <p>© 2026 KEYNOVA — Portfolio project.</p>
     </footer>
+    <script src="{% static 'products/brand-filter.js' %}" defer></script>
 </body>
 </html>
