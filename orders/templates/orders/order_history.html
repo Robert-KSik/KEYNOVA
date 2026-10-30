@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -8,99 +7,554 @@
     <title>My Orders | KEYNOVA</title>
     <link rel="stylesheet" href="{% static 'products/style.css' %}">
     <style>
-        .orders-page {
-            max-width: 1000px;
-            margin: 70px auto;
-            padding: 24px;
-            color: #f5f3ff;
+        .ord-page {
+            width: min(100% - 40px, 920px);
+            margin: 0 auto;
+            padding: 64px 0 90px;
         }
-        .orders-page h1 {
-            margin-bottom: 8px;
+
+        .ord-head {
+            margin-bottom: 40px;
         }
-        .orders-subtitle {
-            color: #aaa4bd;
-            margin-bottom: 32px;
+
+        .ord-title {
+            margin: 14px 0 10px;
+            font-size: clamp(34px, 5vw, 52px);
+            letter-spacing: -2px;
+            line-height: 1.05;
         }
-        .order-card {
-            background: #171520;
-            border: 1px solid #30283f;
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 18px;
+
+        .ord-sub {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
         }
-        .order-top {
+
+        /* ---------- Order card ---------- */
+
+        .ord-card {
+            position: relative;
+            margin-bottom: 22px;
+            padding: 28px;
+            overflow: hidden;
+            background: linear-gradient(145deg, #1a1a20, #101013);
+            border: 1px solid #2c2838;
+            border-radius: 20px;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+            animation: ordIn 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+            animation-delay: calc(var(--i, 0) * 90ms);
+            transition: border-color 0.25s ease, transform 0.25s ease,
+                        box-shadow 0.25s ease;
+        }
+
+        .ord-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg, transparent, rgba(167, 139, 250, 0.55), transparent
+            );
+        }
+
+        .ord-card:hover {
+            border-color: #4a3f6b;
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        .ord-card.is-cancelled {
+            opacity: 0.75;
+        }
+
+        @keyframes ordIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        .ord-card-top {
             display: flex;
             justify-content: space-between;
+            align-items: flex-start;
             gap: 16px;
-            flex-wrap: wrap;
-            margin-bottom: 18px;
         }
-        .order-number {
+
+        .ord-number {
+            margin: 0;
             color: #c4b5fd;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
-        .order-status {
+
+        .ord-date {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* ---------- Status badge ---------- */
+
+        .ord-badge {
+            padding: 7px 14px;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .ord-badge-pending {
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+            border-color: rgba(251, 191, 36, 0.3);
+        }
+
+        .ord-badge-confirmed,
+        .ord-badge-processing {
+            background: rgba(167, 139, 250, 0.12);
+            color: #c4b5fd;
+            border-color: rgba(167, 139, 250, 0.35);
+        }
+
+        .ord-badge-shipped {
+            background: rgba(125, 211, 252, 0.1);
+            color: #7dd3fc;
+            border-color: rgba(125, 211, 252, 0.3);
+        }
+
+        .ord-badge-delivered {
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+            border-color: rgba(74, 222, 128, 0.3);
+        }
+
+        .ord-badge-cancelled {
+            background: rgba(248, 113, 113, 0.1);
+            color: #f87171;
+            border-color: rgba(248, 113, 113, 0.3);
+        }
+
+        /* ---------- Progress tracker ---------- */
+
+        .ord-track {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            margin: 28px 0 8px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .ord-track li {
+            position: relative;
+            padding-top: 30px;
+            color: #6b6b75;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .ord-track li::before {
+            content: "";
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            z-index: 1;
+            width: 12px;
+            height: 12px;
+            margin-left: -6px;
+            background: #26262e;
+            border: 2px solid #3a3a44;
+            border-radius: 50%;
+        }
+
+        .ord-track li::after {
+            content: "";
+            position: absolute;
+            top: 11px;
+            left: -50%;
+            width: 100%;
+            height: 2px;
+            background: #2c2c34;
+        }
+
+        .ord-track li:first-child::after {
+            display: none;
+        }
+
+        .ord-track li.is-done {
             color: #c4b5fd;
         }
-        .order-total {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-top: 16px;
+
+        .ord-track li.is-done::before {
+            background: var(--accent);
+            border-color: var(--accent);
         }
-        .order-item {
-            color: #c8c3d6;
-            margin: 10px 0;
+
+        .ord-track li.is-done::after {
+            background: linear-gradient(90deg, var(--accent), #8B5CF6);
         }
-        .empty-orders {
-            padding: 40px 20px;
-            background: #171520;
-            border-radius: 16px;
+
+        .ord-track li.is-current::before {
+            box-shadow: 0 0 0 5px rgba(167, 139, 250, 0.2),
+                        0 0 14px rgba(167, 139, 250, 0.6);
+        }
+
+        .ord-message {
+            margin: 14px 0 0;
+            color: #c1c1c9;
+            font-size: 14px;
             text-align: center;
         }
-        .orders-link {
-            display: inline-block;
-            margin-top: 18px;
+
+        .ord-cancelled {
+            margin: 22px 0 0;
+            padding: 12px 16px;
+            background: rgba(248, 113, 113, 0.06);
+            border: 1px solid #7a2430;
+            border-radius: 12px;
+            color: #f87171;
+            font-size: 13px;
+        }
+
+        /* ---------- Items ---------- */
+
+        .ord-items {
+            margin: 22px 0 0;
+            padding: 0;
+            list-style: none;
+            border-top: 1px solid #2a2a33;
+        }
+
+        .ord-items li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #2a2a33;
+        }
+
+        .ord-item-name {
+            margin: 0;
+            color: #f4f4f5;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .ord-item-variant {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .ord-qty {
             color: #c4b5fd;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* ---------- Payment and total ---------- */
+
+        .ord-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-top: 22px;
+        }
+
+        .ord-pay {
+            flex: 1 1 280px;
+            max-width: 440px;
+            padding: 16px 18px;
+            background: #0d0d10;
+            border: 1px solid #2c2c34;
+            border-radius: 14px;
+            font-size: 13px;
+        }
+
+        .ord-pay-label {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+        }
+
+        .ord-pay strong {
+            display: block;
+            color: #f4f4f5;
+            font-size: 14px;
+        }
+
+        .ord-pay p {
+            margin: 8px 0 0;
+            color: #b9b9c2;
+            line-height: 1.6;
+        }
+
+        .ord-pay-paid,
+        .ord-pay-paid_demo {
+            border-color: #1f5a37;
+        }
+
+        .ord-pay-paid strong,
+        .ord-pay-paid_demo strong {
+            color: #4ade80;
+        }
+
+        .ord-pay-submitted {
+            border-color: #6b5316;
+        }
+
+        .ord-pay-submitted strong {
+            color: #fbbf24;
+        }
+
+        .ord-pay-rejected,
+        .ord-pay-failed {
+            border-color: #7a2430;
+        }
+
+        .ord-pay-rejected strong,
+        .ord-pay-failed strong {
+            color: #f87171;
+        }
+
+        .ord-pay-refunded strong {
+            color: #7dd3fc;
+        }
+
+        .ord-pay p.ord-note {
+            color: #fbbf24;
+        }
+
+        .ord-pay-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #c4b5fd;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            transition: color 0.2s ease;
+        }
+
+        .ord-pay-link:hover {
+            color: #ffffff;
+        }
+
+        .ord-total {
+            text-align: right;
+        }
+
+        .ord-total span {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+        }
+
+        .ord-total strong {
+            display: block;
+            margin-top: 4px;
+            color: #ffffff;
+            font-size: clamp(22px, 3vw, 30px);
+            letter-spacing: -0.8px;
+            background: linear-gradient(135deg, #ffffff 30%, #c4b5fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ---------- Empty state ---------- */
+
+        .ord-empty {
+            padding: 70px 24px;
+            text-align: center;
+            background: linear-gradient(145deg, #1a1a20, #101013);
+            border: 1px dashed #34313f;
+            border-radius: 20px;
+        }
+
+        .ord-empty h2 {
+            margin: 0 0 8px;
+            font-size: 26px;
+            letter-spacing: -1px;
+        }
+
+        .ord-empty p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .ord-empty .primary-button {
+            margin-top: 22px;
+        }
+
+        @media (max-width: 560px) {
+            .ord-card {
+                padding: 20px;
+            }
+
+            .ord-bottom {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .ord-pay {
+                max-width: none;
+            }
+
+            .ord-total {
+                text-align: left;
+            }
+
+            .ord-track li {
+                font-size: 9px;
+                letter-spacing: 0.5px;
+            }
         }
     </style>
 </head>
 <body>
-    <main class="orders-page">
-        <h1>My Orders</h1>
-        <p class="orders-subtitle">Your KEYNOVA purchase history.</p>
 
-        {% for order in orders %}
-            <section class="order-card">
-                <div class="order-top">
-                    <div>
-                        <div class="order-number">Order #{{ order.id }}</div>
-                        <small>{{ order.created_at|date:"M d, Y · H:i" }}</small>
-                    </div>
-                    <div class="order-status">
-                        {{ order.get_order_status_display }}
-                    </div>
+<header class="navbar">
+    <a class="logo" href="/">KEYNOVA<span>.</span></a>
+
+    <nav>
+        <a href="/">Shop</a>
+        <a href="/#products">Keyboards</a>
+        <a href="{% url 'orders:order_history' %}">My Orders</a>
+        <a href="{% url 'accounts:profile' %}">My Account</a>
+    </nav>
+
+    <div class="navbar-actions">
+        <a class="cart-link" href="/cart/">CART ↗</a>
+    </div>
+</header>
+
+<main class="ord-page">
+    <div class="ord-head">
+        <p class="eyebrow">YOUR ACCOUNT</p>
+        <h1 class="ord-title">My Orders</h1>
+        <p class="ord-sub">Follow every keyboard from checkout to your desk.</p>
+    </div>
+
+    {% for order in orders %}
+        <article class="ord-card{% if order.order_status == 'cancelled' %} is-cancelled{% endif %}"
+                 style="--i: {{ forloop.counter0 }}">
+
+            <div class="ord-card-top">
+                <div>
+                    <p class="ord-number">Order #{{ order.id }}</p>
+                    <p class="ord-date">
+                        {{ order.created_at|date:"F j, Y" }} · {{ order.created_at|date:"H:i" }}
+                    </p>
                 </div>
-
-                {% for item in order.items.all %}
-                    <div class="order-item">
-                        {{ item.product_name }} — {{ item.variant_name }}
-                        × {{ item.quantity }}
-                    </div>
-                {% endfor %}
-
-                <p>Payment: {{ order.get_payment_status_display }}</p>
-
-                <div class="order-total">
-                    Total: {{ order.currency }} {{ order.total|floatformat:2 }}
-                </div>
-            </section>
-        {% empty %}
-            <div class="empty-orders">
-                <h2>No orders yet</h2>
-                <p>Your keyboard journey starts here.</p>
-                <a class="orders-link" href="/">Explore KEYNOVA →</a>
+                <span class="ord-badge ord-badge-{{ order.order_status }}">
+                    {{ order.get_order_status_display }}
+                </span>
             </div>
-        {% endfor %}
-    </main>
+
+            {% if order.order_status == "cancelled" %}
+                <p class="ord-cancelled">This order was cancelled.</p>
+            {% else %}
+                <ol class="ord-track" aria-label="Order progress">
+                    <li class="{% if order.progress_step >= 1 %}is-done{% endif %}{% if order.progress_step == 1 %} is-current{% endif %}">Placed</li>
+                    <li class="{% if order.progress_step >= 2 %}is-done{% endif %}{% if order.progress_step == 2 %} is-current{% endif %}">Confirmed</li>
+                    <li class="{% if order.progress_step >= 3 %}is-done{% endif %}{% if order.progress_step == 3 %} is-current{% endif %}">Shipped</li>
+                    <li class="{% if order.progress_step >= 4 %}is-done{% endif %}{% if order.progress_step == 4 %} is-current{% endif %}">Delivered</li>
+                </ol>
+
+                <p class="ord-message">
+                    {% if order.order_status == "pending" %}We have your order and will confirm it soon.
+                    {% elif order.order_status == "confirmed" %}Your order is confirmed. We're getting it ready.
+                    {% elif order.order_status == "processing" %}Your order is being prepared.
+                    {% elif order.order_status == "shipped" %}Your order is on its way.
+                    {% elif order.order_status == "delivered" %}Delivered. Enjoy your keyboard!
+                    {% endif %}
+                </p>
+            {% endif %}
+
+            <ul class="ord-items">
+                {% for item in order.items.all %}
+                    <li>
+                        <div>
+                            <p class="ord-item-name">{{ item.product_name }}</p>
+                            <p class="ord-item-variant">{{ item.variant_name }}</p>
+                        </div>
+                        <span class="ord-qty">× {{ item.quantity }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <div class="ord-bottom">
+                <div class="ord-pay ord-pay-{{ order.payment_status }}">
+                    <span class="ord-pay-label">{{ order.get_payment_method_display }}</span>
+                    <strong>{{ order.get_payment_status_display }}</strong>
+
+                    {% if order.payment_method == "cod" and order.payment_status == "unpaid" %}
+                        <p>Pay with cash when your keyboard arrives.</p>
+                    {% elif order.payment_status == "submitted" %}
+                        <p>We received your payment details and are checking them.</p>
+                    {% elif order.payment_status == "paid" %}
+                        <p>Your payment is confirmed.</p>
+                    {% elif order.payment_status == "paid_demo" %}
+                        <p>Demo payment confirmed.</p>
+                    {% elif order.payment_status == "rejected" %}
+                        <p>We couldn't verify this payment. Please check the details and submit again.</p>
+                    {% elif order.payment_status == "pending" %}
+                        <p>We're waiting for your payment details.</p>
+                    {% endif %}
+
+                    {% if order.customer_note %}
+                        <p class="ord-note">Note from KEYNOVA: {{ order.customer_note }}</p>
+                    {% endif %}
+
+                    {% if order.order_status != "cancelled" %}
+                        {% if order.payment_status == "pending" or order.payment_status == "rejected" %}
+                            <a class="ord-pay-link" href="{% url 'orders:order_payment' order.id %}">
+                                Submit payment details →
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                <div class="ord-total">
+                    <span>Total</span>
+                    <strong>
+                        {% if order.currency == "MMK" %}
+                            {{ order.total|floatformat:"0g" }} Ks
+                        {% else %}
+                            ${{ order.total|floatformat:"2g" }}
+                        {% endif %}
+                    </strong>
+                </div>
+            </div>
+        </article>
+    {% empty %}
+        <div class="ord-empty">
+            <h2>No orders yet</h2>
+            <p>Your keyboard journey starts here.</p>
+            <a class="primary-button" href="/">EXPLORE KEYNOVA ↗</a>
+        </div>
+    {% endfor %}
+</main>
+
+<footer>
+    <a class="logo" href="/">KEYNOVA<span>.</span></a>
+    <p>Engineered for every keystroke.</p>
+    <p>© 2026 KEYNOVA — Portfolio project.</p>
+</footer>
+
 </body>
 </html>
