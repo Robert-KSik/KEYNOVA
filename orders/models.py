@@ -73,6 +73,11 @@ class Order(models.Model):
         choices=ORDER_STATUSES,
         default="pending",
     )
+    customer_note = models.TextField(
+        blank=True,
+        help_text="Shown to the customer on their order page, "
+                  "for example why a payment was rejected.",
+    )
 
     # Manual payment proof (KBZPay, Wave Pay, AYA Pay, bank transfer).
     transaction_id = models.CharField(
@@ -121,6 +126,17 @@ class Order(models.Model):
     @property
     def currency_label(self):
         return "Ks" if self.currency == "MMK" else self.currency
+
+    @property
+    def progress_step(self):
+        steps = {
+            "pending": 1,
+            "confirmed": 2,
+            "processing": 2,
+            "shipped": 3,
+            "delivered": 4,
+        }
+        return steps.get(self.order_status, 0)
 
     def __str__(self):
         return f"Order #{self.pk} — {self.full_name}"
