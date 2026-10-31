@@ -1,28 +1,16 @@
+# Secrets and local settings
+.env
 
 # Python
-__pycache__/
-*.py[cod]
-*.pyo
-
-# Virtual environments
 .venv/
-venv/
-env/
+__pycache__/
+*.pyc
 
-# Django secrets and environment variables
-.env
-.env.*
-!.env.example
-
-# Local database
+# Local data (the live site has its own database and photos)
 db.sqlite3
-db.sqlite3-journal
-
-# User-uploaded media
 media/
+staticfiles/
 
-# Editor and operating system
+# Editor and exports
 .vscode/
-.idea/
-.DS_Store
-Thumbs.db
+products_data.jsondb
