@@ -1,0 +1,1280 @@
+[
+{
+  "model": "products.brand",
+  "pk": 1,
+  "fields": {
+    "name": "Keychron",
+    "description": "",
+    "website": "",
+    "is_featured": true,
+    "featured_order": 0
+  }
+},
+{
+  "model": "products.brand",
+  "pk": 2,
+  "fields": {
+    "name": "AULA",
+    "description": "",
+    "website": "",
+    "is_featured": true,
+    "featured_order": 0
+  }
+},
+{
+  "model": "products.brand",
+  "pk": 3,
+  "fields": {
+    "name": "AJAZZ",
+    "description": "",
+    "website": "",
+    "is_featured": false,
+    "featured_order": 0
+  }
+},
+{
+  "model": "products.brand",
+  "pk": 4,
+  "fields": {
+    "name": "GravaStar",
+    "description": "",
+    "website": "",
+    "is_featured": true,
+    "featured_order": 0
+  }
+},
+{
+  "model": "products.brand",
+  "pk": 5,
+  "fields": {
+    "name": "Razer",
+    "description": "",
+    "website": "",
+    "is_featured": true,
+    "featured_order": 4
+  }
+},
+{
+  "model": "products.brand",
+  "pk": 6,
+  "fields": {
+    "name": "NUPHY",
+    "description": "",
+    "website": "",
+    "is_featured": true,
+    "featured_order": 0
+  }
+},
+{
+  "model": "products.category",
+  "pk": 1,
+  "fields": {
+    "name": "Mechanical Keyboards",
+    "description": ""
+  }
+},
+{
+  "model": "products.category",
+  "pk": 2,
+  "fields": {
+    "name": "Wireless Mechanical Keyboards",
+    "description": "Mechanical keyboards with Bluetooth or 2.4 GHz wireless connectivity"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 3,
+  "fields": {
+    "name": "Gaming Mechanical Keyboards",
+    "description": "Gaming-focused mechanical keyboards with customizable switches and lighting"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 4,
+  "fields": {
+    "name": "Premium Mechanical Keyboards",
+    "description": "Premium keyboards featuring distinctive designs, displays, knobs, or upgraded materials"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 5,
+  "fields": {
+    "name": "Compact Mechanical Keyboards",
+    "description": "Space-saving keyboards with 60%, 65%, or 75% layouts"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 6,
+  "fields": {
+    "name": "Magnetic Keyboards",
+    "description": ""
+  }
+},
+{
+  "model": "products.product",
+  "pk": 1,
+  "fields": {
+    "name": "K2 Wireless Mechanical Keyboard",
+    "brand": 1,
+    "category": 1,
+    "description": "A compact mechanical keyboard for typing, productivity and gaming",
+    "price": "80.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Wireless / Bluetooth",
+    "image": "products/k2v2_rgb_convertible_aluminium_keyboard_us_large.jpg",
+    "is_available": true,
+    "created_at": "2026-10-14T11:09:53.732Z",
+    "warranty_months": 6
+  }
+},
+{
+  "model": "products.product",
+  "pk": 2,
+  "fields": {
+    "name": "AULA F75 Max",
+    "brand": 2,
+    "category": 4,
+    "description": "A premium compact mechanical keyboard featuring a display, rotary knob, customizable mechanical switches, and multi-mode connectivity. Confirm specifications for the exact version.",
+    "price": "100.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "products/IMG_5709.webp",
+    "is_available": true,
+    "created_at": "2026-10-15T18:51:02.269Z",
+    "warranty_months": 12
+  }
+},
+{
+  "model": "products.product",
+  "pk": 3,
+  "fields": {
+    "name": "AULA F75 Pro",
+    "brand": 2,
+    "category": 4,
+    "description": "A compact 75% mechanical keyboard with a rotary knob, customizable switches, and multi-mode connectivity. Verify display and other specifications for this version.",
+    "price": "100.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "products/F75pro.jpg",
+    "is_available": true,
+    "created_at": "2026-10-15T18:52:30.335Z",
+    "warranty_months": 12
+  }
+},
+{
+  "model": "products.product",
+  "pk": 4,
+  "fields": {
+    "name": "AULA F75S",
+    "brand": 2,
+    "category": 3,
+    "description": "A compact mechanical keyboard in the AULA F75 family. Confirm its exact layout, connectivity, switch options, and display features.",
+    "price": "100.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "",
+    "is_available": false,
+    "created_at": "2026-10-15T18:53:39.949Z",
+    "warranty_months": null
+  }
+},
+{
+  "model": "products.product",
+  "pk": 5,
+  "fields": {
+    "name": "AULA F75",
+    "brand": 2,
+    "category": 2,
+    "description": "A compact 75% mechanical keyboard with a rotary knob and customizable typing configurations. Verify the exact version and included connectivity modes.",
+    "price": "100.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "products/F75.webp",
+    "is_available": true,
+    "created_at": "2026-10-15T18:54:49.531Z",
+    "warranty_months": 6
+  }
+},
+{
+  "model": "products.product",
+  "pk": 6,
+  "fields": {
+    "name": "AULA S75",
+    "brand": 2,
+    "category": 3,
+    "description": "A compact mechanical keyboard from AULA's S75 series. Confirm the exact model's layout, display, battery, and connection options.",
+    "price": "100.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-10-15T18:55:24.669Z",
+    "warranty_months": null
+  }
+},
+{
+  "model": "products.product",
+  "pk": 7,
+  "fields": {
+    "name": "AULA S75 Pro",
+    "brand": 2,
+    "category": 4,
+    "description": "A premium compact keyboard from AULA's S75 family. Verify the exact version's screen, connectivity, switches, and battery specifications.",
+    "price": "320000.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "products/S75_Pro.avif",
+    "is_available": true,
+    "created_at": "2026-10-15T18:56:47.961Z",
+    "warranty_months": 6
+  }
+},
+{
+  "model": "products.product",
+  "pk": 8,
+  "fields": {
+    "name": "AULA S75 Max",
+    "brand": 2,
+    "category": 4,
+    "description": "A premium keyboard in AULA's S75 series. Confirm the exact model's screen placement, battery capacity, layout, and connection options.",
+    "price": "100.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "",
+    "is_available": false,
+    "created_at": "2026-10-15T18:57:54.085Z",
+    "warranty_months": 6
+  }
+},
+{
+  "model": "products.product",
+  "pk": 9,
+  "fields": {
+    "name": "AULA T75",
+    "brand": 2,
+    "category": 3,
+    "description": "A compact mechanical keyboard from AULA's T-series. Confirm the exact model's key layout, connection modes, switch options, and battery.",
+    "price": "230000.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-10-15T18:58:52.806Z",
+    "warranty_months": 6
+  }
+},
+{
+  "model": "products.product",
+  "pk": 10,
+  "fields": {
+    "name": "AJAZZ AK820 Pro",
+    "brand": 3,
+    "category": 4,
+    "description": "A compact mechanical keyboard featuring a display and rotary knob, with multi-mode connectivity. Confirm the exact edition and specifications.",
+    "price": "230000.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "products/820_pro_jGspnHY.jpg",
+    "is_available": true,
+    "created_at": "2026-10-15T19:00:06.280Z",
+    "warranty_months": 3
+  }
+},
+{
+  "model": "products.product",
+  "pk": 11,
+  "fields": {
+    "name": "GravaStar Mercury K1",
+    "brand": 4,
+    "category": 4,
+    "description": "A distinctive futuristic mechanical keyboard with an eye-catching industrial design. A premium showcase pick for mechanical keyboard enthusiasts.",
+    "price": "850000.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "products/Mercury-K1-Gaming-Keyboard-Gradient-Black-75-Mechanical-Keyboard-1.webp",
+    "is_available": true,
+    "created_at": "2026-10-15T19:01:15.928Z",
+    "warranty_months": 12
+  }
+},
+{
+  "model": "products.product",
+  "pk": 12,
+  "fields": {
+    "name": "AULA TK68",
+    "brand": 2,
+    "category": 5,
+    "description": "A compact mechanical keyboard. Confirm the exact version, layout, connectivity, and switch options before publishing specifications.",
+    "price": "220000.00",
+    "stock": 100,
+    "layout": "65%",
+    "connection_type": "Tri-mode",
+    "image": "",
+    "is_available": true,
+    "created_at": "2026-10-15T19:02:06.720Z",
+    "warranty_months": 3
+  }
+},
+{
+  "model": "products.product",
+  "pk": 13,
+  "fields": {
+    "name": "Keychron K2 HE Magnetic",
+    "brand": 1,
+    "category": 6,
+    "description": "A compact 75% wireless magnetic mechanical keyboard designed for productivity and gaming, featuring Hall Effect magnetic switches and adjustable actuation",
+    "price": "320000.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "products/......webp",
+    "is_available": true,
+    "created_at": "2026-10-15T19:06:21.698Z",
+    "warranty_months": 3
+  }
+},
+{
+  "model": "products.product",
+  "pk": 14,
+  "fields": {
+    "name": "AULA AG75",
+    "brand": 2,
+    "category": 4,
+    "description": "CNC aluminum body, magnetic switches, themed keycaps, and a distinctive metal finish.",
+    "price": "200000.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Wired",
+    "image": "products/Aula_AG75.avif",
+    "is_available": true,
+    "created_at": "2026-10-23T19:10:11.824Z",
+    "warranty_months": 6
+  }
+},
+{
+  "model": "products.product",
+  "pk": 15,
+  "fields": {
+    "name": "GravaStar Mercury K98 Pro",
+    "brand": 4,
+    "category": 1,
+    "description": "Glossy aluminum exoskeleton, color TFT display, custom linear switches, and extensive RGB lighting.",
+    "price": "1235000.00",
+    "stock": 100,
+    "layout": "98%",
+    "connection_type": "Tri-mode",
+    "image": "products/mercury-k98-pro-mechaniccal-gaming-keyboard-1034.webp",
+    "is_available": true,
+    "created_at": "2026-10-23T19:15:14.862Z",
+    "warranty_months": 12
+  }
+},
+{
+  "model": "products.product",
+  "pk": 16,
+  "fields": {
+    "name": "GravaStar Mercury K1 Pro",
+    "brand": 4,
+    "category": 1,
+    "description": "Futuristic skeletal aluminum frame, rotary knob, dual RGB lighting",
+    "price": "1085000.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "products/Mercury-K1-Pro-Gaming-Keyboard-Interstellar-Silver-75-Mechanical.webp",
+    "is_available": true,
+    "created_at": "2026-10-23T19:19:13.919Z",
+    "warranty_months": 12
+  }
+},
+{
+  "model": "products.product",
+  "pk": 17,
+  "fields": {
+    "name": "AULA F75HE",
+    "brand": 2,
+    "category": 6,
+    "description": "Classic F75 Design Meets Next-Level Performance Featuring tri-mode connectivity, ultra-low latency, a high-capacity battery for long-lasting wireless freedom, a versatile multi-function knob and full customization through the proprietary AULA HUB.",
+    "price": "290000.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "products/AULA_F75HE.avif",
+    "is_available": true,
+    "created_at": "2026-10-25T12:00:35.053Z",
+    "warranty_months": 6
+  }
+},
+{
+  "model": "products.product",
+  "pk": 18,
+  "fields": {
+    "name": "Mercury K1Lite",
+    "brand": 4,
+    "category": 4,
+    "description": "j",
+    "price": "435000.00",
+    "stock": 100,
+    "layout": "75%",
+    "connection_type": "Tri-mode",
+    "image": "products/ban-phim-co-gravastar-mercury-k1-lite-black-1.jpg",
+    "is_available": true,
+    "created_at": "2026-10-27T12:12:55.244Z",
+    "warranty_months": 12
+  }
+},
+{
+  "model": "products.product",
+  "pk": 19,
+  "fields": {
+    "name": "WH80 Gaming Keyboard",
+    "brand": 6,
+    "category": 3,
+    "description": "A Regular Keyboard Transmits 1000 Times Per Second, While An 8K Keyboard Transmits Up To 8000 Times Per Second, The High Performance Brings Smoother Operation, Allowing You To Maintain Stable Performance In High-Intensity Confrontations And Significantly Reducing Mistakes.",
+    "price": "1300000.00",
+    "stock": 100,
+    "layout": "80%",
+    "connection_type": "Tri-mode",
+    "image": "products/NuPhyWH80NovaWhiteTopf5f5f5.webp",
+    "is_available": true,
+    "created_at": "2026-10-28T18:08:40.662Z",
+    "warranty_months": 6
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 1,
+  "fields": {
+    "product": 2,
+    "variant_name": "Black",
+    "image": "",
+    "case_color": "Black",
+    "keycap_color": "Black",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 5,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 2,
+  "fields": {
+    "product": 1,
+    "variant_name": "Black / Brown",
+    "image": "",
+    "case_color": "Black",
+    "keycap_color": "Black",
+    "keycap_material": "PBT",
+    "switch_type": "tactile",
+    "switch_model": "Verify exact switch",
+    "connection_type": "Bluetooth",
+    "layout": "75%",
+    "battery_capacity_mah": null,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 4,
+  "fields": {
+    "product": 11,
+    "variant_name": "Sakura Pink —Special Edition",
+    "image": "products/variants/S75_Pro.avif",
+    "case_color": "Pink aluminum alloy",
+    "keycap_color": "Three-tone",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "GravaStar × Kailh Cherry Pink",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 8000,
+    "price_adjustment": "100.00",
+    "compare_at_price": null,
+    "stock": 9,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 5,
+  "fields": {
+    "product": 11,
+    "variant_name": "Stealth Black",
+    "image": "products/variants/03_1_57Aq8Ad.webp",
+    "case_color": "Black aluminum alloy",
+    "keycap_color": "Exact color pattern varies by listing",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "GravaStar Custom Linear",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 8000,
+    "price_adjustment": "100.00",
+    "compare_at_price": null,
+    "stock": 9,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 6,
+  "fields": {
+    "product": 11,
+    "variant_name": "Gradient White",
+    "image": "products/variants/K1_Gradient_White.jpg",
+    "case_color": "White aluminum alloy",
+    "keycap_color": "Gradient white-themed",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "GravaStar Custom Linear",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 8000,
+    "price_adjustment": "100.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 7,
+  "fields": {
+    "product": 11,
+    "variant_name": "Lavender Purple",
+    "image": "products/variants/K1_Lavende_Purple.jpg",
+    "case_color": "Lavender-purple aluminum alloy",
+    "keycap_color": "Purple-themed",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "GravaStar Custom Linear",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 8000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 8,
+  "fields": {
+    "product": 11,
+    "variant_name": "Ice Blue",
+    "image": "products/variants/K1_Ice_Blue.jpg",
+    "case_color": "Ice-blue aluminum alloy",
+    "keycap_color": "Blue-themed",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "GravaStar Custom Linear",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 8000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 9,
+  "fields": {
+    "product": 11,
+    "variant_name": "Gradient Black",
+    "image": "products/variants/Mercury-K1-Gaming-Keyboard-Gradient-Black-75-Mechanical-Keyboard-1.webp",
+    "case_color": "Aluminum alloy, gradient black",
+    "keycap_color": "Gradient color",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "GravaStar Custom Linear",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 8000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 11,
+  "fields": {
+    "product": 16,
+    "variant_name": "Interstellar Silver",
+    "image": "",
+    "case_color": "Silver aluminum alloy",
+    "keycap_color": "Double-shot",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "Kailh Speedy Mint linear",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 8000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 14,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 12,
+  "fields": {
+    "product": 16,
+    "variant_name": "Ghost Silver",
+    "image": "",
+    "case_color": "Glossy silver aluminum exoskeleton",
+    "keycap_color": "Frosted translucent",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "Kailh Speedy Mint linear",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 8000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 13,
+  "fields": {
+    "product": 16,
+    "variant_name": "Cyberpunk",
+    "image": "",
+    "case_color": "Glossy themed aluminum exoskeleton",
+    "keycap_color": "Pudding",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "Kailh Speedy Mint linear",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 8000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 14,
+  "fields": {
+    "product": 16,
+    "variant_name": "CyberFlare",
+    "image": "",
+    "case_color": "Glossy themed aluminum exoskeleton",
+    "keycap_color": "Pudding",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "Kailh Speedy Mint linear",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 8000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 15,
+  "fields": {
+    "product": 16,
+    "variant_name": "Battle-Worn Yellow",
+    "image": "",
+    "case_color": "Yellow, battle-worn themed finish",
+    "keycap_color": "Edition-specific",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "Kailh Speedy Mint linear",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 8000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 9,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 16,
+  "fields": {
+    "product": 14,
+    "variant_name": "ULTRA War",
+    "image": "",
+    "case_color": "Exact color needs confirmation",
+    "keycap_color": "Themed dye-sublimated keycaps",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "Eight Treasure magnetic",
+    "connection_type": "USB-C",
+    "layout": "75%",
+    "battery_capacity_mah": null,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 17,
+  "fields": {
+    "product": 2,
+    "variant_name": "White Blue",
+    "image": "",
+    "case_color": "White / Blue",
+    "keycap_color": "White / Blue",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 18,
+  "fields": {
+    "product": 2,
+    "variant_name": "Pink White",
+    "image": "",
+    "case_color": "Pink / White",
+    "keycap_color": "Pink / White",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 19,
+  "fields": {
+    "product": 3,
+    "variant_name": "Pink Whitee",
+    "image": "",
+    "case_color": "Pink/white",
+    "keycap_color": "Pink/white",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "30000.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 20,
+  "fields": {
+    "product": 2,
+    "variant_name": "Caramel Pudding",
+    "image": "",
+    "case_color": "Caramel/cream",
+    "keycap_color": "Caramel/cream",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "20000.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 21,
+  "fields": {
+    "product": 2,
+    "variant_name": "Black Red",
+    "image": "",
+    "case_color": "Black",
+    "keycap_color": "Black/ Red",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "20000.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 22,
+  "fields": {
+    "product": 2,
+    "variant_name": "Black Transparent",
+    "image": "",
+    "case_color": "Black/ Transparent",
+    "keycap_color": "Dark/ Transparent",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "30000.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 23,
+  "fields": {
+    "product": 5,
+    "variant_name": "Light Blue",
+    "image": "",
+    "case_color": "Light Blue",
+    "keycap_color": "Light Blue / White",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 24,
+  "fields": {
+    "product": 5,
+    "variant_name": "Green",
+    "image": "",
+    "case_color": "Green",
+    "keycap_color": "Green / White",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 25,
+  "fields": {
+    "product": 5,
+    "variant_name": "Black",
+    "image": "",
+    "case_color": "Black",
+    "keycap_color": "Black",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 26,
+  "fields": {
+    "product": 5,
+    "variant_name": "Sea Salt Blue",
+    "image": "",
+    "case_color": "Blue",
+    "keycap_color": "Blue/ White",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 27,
+  "fields": {
+    "product": 5,
+    "variant_name": "Blue Side-Printed",
+    "image": "",
+    "case_color": "Blue",
+    "keycap_color": "Blue",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 28,
+  "fields": {
+    "product": 5,
+    "variant_name": "Black Side-Printed",
+    "image": "",
+    "case_color": "Black",
+    "keycap_color": "Black",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 29,
+  "fields": {
+    "product": 5,
+    "variant_name": "Black Pink Side-Printed",
+    "image": "",
+    "case_color": "Black",
+    "keycap_color": "Black / Pink",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 30,
+  "fields": {
+    "product": 5,
+    "variant_name": "Gradient Pink",
+    "image": "",
+    "case_color": "Pink Gradient",
+    "keycap_color": "Pink / White",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 31,
+  "fields": {
+    "product": 5,
+    "variant_name": "Purple",
+    "image": "",
+    "case_color": "Purple",
+    "keycap_color": "Purple / White",
+    "keycap_material": "PBT",
+    "switch_type": "linear",
+    "switch_model": "LEOBOG Reaper Switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 32,
+  "fields": {
+    "product": 17,
+    "variant_name": "Black Contour",
+    "image": "products/variants/F75HE_Black.avif",
+    "case_color": "Black Contour",
+    "keycap_color": "Black / Contour Design",
+    "keycap_material": "Exact material unconfirmed",
+    "switch_type": "hall effect",
+    "switch_model": "Black Emperor Magnetic",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 33,
+  "fields": {
+    "product": 17,
+    "variant_name": "Light Blue",
+    "image": "products/variants/HE_Light_Blue.avif",
+    "case_color": "Light Blue",
+    "keycap_color": "Light Blue / White Design",
+    "keycap_material": "Exact material unconfirmed",
+    "switch_type": "hall effect",
+    "switch_model": "Verify exact switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "20000.00",
+    "compare_at_price": null,
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 34,
+  "fields": {
+    "product": 17,
+    "variant_name": "Light Grey",
+    "image": "products/variants/75HE_Grey.avif",
+    "case_color": "Black",
+    "keycap_color": "Light Grey / White Design",
+    "keycap_material": "Exact material unconfirmed",
+    "switch_type": "hall effect",
+    "switch_model": "Verify exact switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": "20000.00",
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 35,
+  "fields": {
+    "product": 17,
+    "variant_name": "White Contour",
+    "image": "products/variants/1-2606091R0513Y.avif",
+    "case_color": "White",
+    "keycap_color": "White / Contour Design",
+    "keycap_material": "Exact material unconfirmed",
+    "switch_type": "hall effect",
+    "switch_model": "Verify exact switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": "20000.00",
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 36,
+  "fields": {
+    "product": 17,
+    "variant_name": "Gradient Black",
+    "image": "products/variants/1-2606091R0523J.avif",
+    "case_color": "Gradient Black",
+    "keycap_color": "Gradient black and white",
+    "keycap_material": "Exact material unconfirmed",
+    "switch_type": "hall effect",
+    "switch_model": "Verify exact switch",
+    "connection_type": "Tri-mode",
+    "layout": "75%",
+    "battery_capacity_mah": 4000,
+    "price_adjustment": "0.00",
+    "compare_at_price": "20000.00",
+    "stock": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "products.variantoption",
+  "pk": 1,
+  "fields": {
+    "variant": 1,
+    "option_type": "switch",
+    "choice_name": "Blue",
+    "extra_price": "30000.00",
+    "stock": 8,
+    "is_available": true
+  }
+},
+{
+  "model": "products.variantoption",
+  "pk": 2,
+  "fields": {
+    "variant": 1,
+    "option_type": "switch",
+    "choice_name": "Red",
+    "extra_price": "31500.00",
+    "stock": 8,
+    "is_available": true
+  }
+},
+{
+  "model": "products.variantoption",
+  "pk": 3,
+  "fields": {
+    "variant": 1,
+    "option_type": "switch",
+    "choice_name": "Clicky",
+    "extra_price": "31500.00",
+    "stock": 8,
+    "is_available": true
+  }
+},
+{
+  "model": "products.variantoption",
+  "pk": 4,
+  "fields": {
+    "variant": 1,
+    "option_type": "switch",
+    "choice_name": "Tactile",
+    "extra_price": "31500.00",
+    "stock": 8,
+    "is_available": true
+  }
+},
+{
+  "model": "products.variantoption",
+  "pk": 5,
+  "fields": {
+    "variant": 1,
+    "option_type": "keycap_color",
+    "choice_name": "Gradient Gray",
+    "extra_price": "20000.00",
+    "stock": 8,
+    "is_available": true
+  }
+},
+{
+  "model": "products.variantoption",
+  "pk": 6,
+  "fields": {
+    "variant": 1,
+    "option_type": "keycap_color",
+    "choice_name": "Ice Blue",
+    "extra_price": "0.00",
+    "stock": 8,
+    "is_available": true
+  }
+},
+{
+  "model": "products.variantoption",
+  "pk": 7,
+  "fields": {
+    "variant": 1,
+    "option_type": "keycap_color",
+    "choice_name": "Pink White",
+    "extra_price": "20000.00",
+    "stock": 8,
+    "is_available": true
+  }
+},
+{
+  "model": "products.variantoption",
+  "pk": 8,
+  "fields": {
+    "variant": 1,
+    "option_type": "keycap_color",
+    "choice_name": "Caramel Pudding",
+    "extra_price": "10000.00",
+    "stock": 8,
+    "is_available": true
+  }
+},
+{
+  "model": "products.variantoption",
+  "pk": 9,
+  "fields": {
+    "variant": 1,
+    "option_type": "keycap_color",
+    "choice_name": "Black Red",
+    "extra_price": "0.00",
+    "stock": 8,
+    "is_available": true
+  }
+}
+]

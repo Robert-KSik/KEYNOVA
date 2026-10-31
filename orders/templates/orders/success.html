@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -336,12 +335,12 @@
                                 <div class="item-meta">
                                     {{ item.variant_name }}<br>
                                     Quantity: {{ item.quantity }}
-                                    × ${{ item.unit_price|floatformat:2 }}
+                                    × {{ item.unit_price|floatformat:"0g" }} {{ order.currency_label }}
                                 </div>
                             </div>
 
                             <div class="item-price">
-                                ${{ item.line_total|floatformat:2 }}
+                                {{ item.line_total|floatformat:"0g" }} {{ order.currency_label }}
                             </div>
                         </div>
                     {% endfor %}
@@ -351,32 +350,47 @@
                     <div class="total-row">
                         <span>Subtotal</span>
                         <span>
-                            ${{ order.subtotal|floatformat:2 }}
+                            {{ order.subtotal|floatformat:"0g" }} {{ order.currency_label }}
                         </span>
                     </div>
 
                     <div class="total-row">
                         <span>Delivery</span>
                         <span>
-                            ${{ order.delivery_fee|floatformat:2 }}
+                            {{ order.delivery_fee|floatformat:"0g" }} {{ order.currency_label }}
                         </span>
                     </div>
 
                     <div class="total-row grand-total">
                         <span>Total</span>
                         <span>
-                            ${{ order.total|floatformat:2 }}
-                            {{ order.currency }}
+                            {{ order.total|floatformat:"0g" }} {{ order.currency_label }}
                         </span>
                     </div>
                 </div>
 
-                {% if order.payment_method != "cod" %}
+                {% if order.payment_method == "cod" %}
                     <div class="payment-notice">
-                        <strong>Demo payment notice</strong><br>
-                        This payment method is in demo mode. No real
-                        payment has been processed. Please do not treat
-                        this order as paid.
+                        <strong>Cash on delivery</strong><br>
+                        Please have the exact amount ready when your
+                        keyboard arrives.
+                    </div>
+                {% elif order.payment_status == "pending" or order.payment_status == "rejected" %}
+                    <div class="payment-notice">
+                        <strong>Payment needed</strong><br>
+                        Your order is saved, but we can't ship it until
+                        we receive your payment details.
+                        <br><br>
+                        <a class="primary-link"
+                           href="{% url 'orders:order_payment' order.id %}">
+                            Pay now &rarr;
+                        </a>
+                    </div>
+                {% elif order.payment_status == "submitted" %}
+                    <div class="payment-notice">
+                        <strong>Payment under review</strong><br>
+                        We received your payment details and will confirm
+                        them shortly.
                     </div>
                 {% endif %}
 
