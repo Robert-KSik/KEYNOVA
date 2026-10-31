@@ -54,7 +54,7 @@
 
                             <p>
                                 Price per keyboard:
-                                ${{ item.unit_price|floatformat:2 }}
+                                {{ item.unit_price|floatformat:2 }}Ks
                             </p>
 
                             {% if item.options %}
@@ -83,7 +83,7 @@
                             </p>
 
                             <p class="cart-subtotal">
-                                Subtotal: ${{ item.subtotal|floatformat:2 }}
+                                Subtotal: {{ item.subtotal|floatformat:2 }}Ks
                             </p>
                         </div>
 

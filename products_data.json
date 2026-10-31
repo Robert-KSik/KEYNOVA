@@ -502,13 +502,13 @@
   "pk": 4,
   "fields": {
     "product": 11,
-    "variant_name": "Sakura Pink —Special Edition",
+    "variant_name": "Sakura Pink â€”Special Edition",
     "image": "products/variants/S75_Pro.avif",
     "case_color": "Pink aluminum alloy",
     "keycap_color": "Three-tone",
     "keycap_material": "PBT",
     "switch_type": "linear",
-    "switch_model": "GravaStar × Kailh Cherry Pink",
+    "switch_model": "GravaStar Ã— Kailh Cherry Pink",
     "connection_type": "Tri-mode",
     "layout": "75%",
     "battery_capacity_mah": 8000,
@@ -619,7 +619,7 @@
     "battery_capacity_mah": 8000,
     "price_adjustment": "0.00",
     "compare_at_price": null,
-    "stock": 10,
+    "stock": 9,
     "is_available": true
   }
 },
