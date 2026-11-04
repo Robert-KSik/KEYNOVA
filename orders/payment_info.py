@@ -9,7 +9,7 @@ PAYMENT_ACCOUNTS = {
     "kbz": {
         "label": "KBZPay",
         "account_name": "Sitt Paing Nay Lwin",
-        "account_number": "09XXXXXXXXX",
+        "account_number": "09784688536",
         "extra": "",
         "id_label": "Transaction No.",
         "tip": "Open your payment receipt in KBZPay and copy the Transaction No.",
@@ -17,7 +17,7 @@ PAYMENT_ACCOUNTS = {
     "wave": {
         "label": "Wave Pay",
         "account_name": "Sitt Paing Nay Lwin",
-        "account_number": "09XXXXXXXXX",
+        "account_number": "09784688536",
         "extra": "",
         "id_label": "Transaction ID",
         "tip": "Open your payment receipt in Wave Pay and copy the Transaction ID.",
@@ -25,7 +25,7 @@ PAYMENT_ACCOUNTS = {
     "aya": {
         "label": "AYA Pay",
         "account_name": "Sitt Paing Nay Lwin",
-        "account_number": "09XXXXXXXXX",
+        "account_number": "09784688536",
         "extra": "",
         "id_label": "Transaction ID",
         "tip": "Open your payment receipt in AYA Pay and copy the Transaction ID.",
